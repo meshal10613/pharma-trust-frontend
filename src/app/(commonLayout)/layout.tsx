@@ -1,3 +1,4 @@
+import { getUser } from "../../actions/user.action";
 import { Navbar } from "../../components/layout/navbar";
 
 export default async function CommonLayout({
@@ -5,12 +6,12 @@ export default async function CommonLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // const { data } = await getUser();
-    // if(!data) return null;
-    // const user = data?.user;
+    const { data } = await getUser();
+
+    const user = data?.user;
     return (
         <div>
-            <Navbar />
+            <Navbar user={user} />
             {children}
         </div>
     );

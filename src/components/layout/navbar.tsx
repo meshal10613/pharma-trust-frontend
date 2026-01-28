@@ -19,11 +19,12 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
-// import { User } from "@/types";
+import { User } from "@/types";
 import Image from "next/image";
-// import { authClient } from "@/lib/auth-client";
-// import { toast } from "sonner";
-// import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface MenuItem {
     title: string;
@@ -34,7 +35,7 @@ interface MenuItem {
 }
 
 interface Navbar1Props {
-    // user: User | null;
+    user: User | null;
     className?: string;
     logo?: {
         url: string;
@@ -57,7 +58,7 @@ interface Navbar1Props {
 }
 
 const Navbar = ({
-    // user,
+    user,
     logo = {
         url: "https://www.shadcnblocks.com",
         src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
@@ -66,10 +67,6 @@ const Navbar = ({
     },
     menu = [
         { title: "Home", url: "/" },
-        {
-            title: "Blogs",
-            url: "/blogs",
-        },
         {
             title: "About",
             url: "/about",
@@ -85,19 +82,19 @@ const Navbar = ({
     },
     className,
 }: Navbar1Props) => {
-    // const router = useRouter();
-    // const handleLogout = async () => {
-    //     const toastId = toast.loading("Logging out...");
-    //     try {
-    //         await authClient.signOut();
-    //         toast.success("Logged out successfully", { id: toastId });
+    const router = useRouter();
+    const handleLogout = async () => {
+        const toastId = toast.loading("Logging out...");
+        try {
+            await authClient.signOut();
+            toast.success("Logged out successfully", { id: toastId });
 
-    //         // Re-run server components (Navbar, layouts, etc.)
-    //         router.refresh();
-    //     } catch (error) {
-    //         toast.error("Failed to logout", { id: toastId });
-    //     }
-    // };
+            router.refresh();
+        } catch (error) {
+            console.log(error);
+            toast.error("Failed to logout", { id: toastId });
+        }
+    };
 
     return (
         <section className={cn("py-4", className)}>
@@ -130,7 +127,7 @@ const Navbar = ({
                     </div>
                     <div className="flex gap-2">
                         <ModeToggle />
-                        {/* {user ? (
+                        {user ? (
                             <div className="flex gap-2">
                                 <Button
                                     onClick={handleLogout}
@@ -141,31 +138,42 @@ const Navbar = ({
                                     Logout
                                 </Button>
                                 <div className="relative w-10 h-10">
-                                    <Image
-                                        src={
-                                            user.image ||
-                                            `https://img.daisyui.com/images/profile/demo/spiderperson@192.webp`
-                                        }
-                                        alt={user.name}
-                                        fill
-                                        className="rounded-full"
-                                    />
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Image
+                                                src={
+                                                    user.image ||
+                                                    `https://img.daisyui.com/images/profile/demo/spiderperson@192.webp`
+                                                }
+                                                alt={user.name}
+                                                fill
+                                                className="rounded-full"
+                                            />
+                                        </TooltipTrigger>
+                                        <TooltipContent side="bottom">
+                                            <p>{user.name}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
                                 </div>
                             </div>
-                        ) : ( */}
-                        <>
-                            <Button asChild variant="outline" size="default">
-                                <Link href={auth.login.url}>
-                                    {auth.login.title}
-                                </Link>
-                            </Button>
-                            <Button asChild size="default">
-                                <Link href={auth.signup.url}>
-                                    {auth.signup.title}
-                                </Link>
-                            </Button>
-                        </>
-                        {/* )} */}
+                        ) : (
+                            <>
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    size="default"
+                                >
+                                    <Link href={auth.login.url}>
+                                        {auth.login.title}
+                                    </Link>
+                                </Button>
+                                <Button asChild size="default">
+                                    <Link href={auth.signup.url}>
+                                        {auth.signup.title}
+                                    </Link>
+                                </Button>
+                            </>
+                        )}
                     </div>
                 </nav>
 

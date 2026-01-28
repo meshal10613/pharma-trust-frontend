@@ -19,27 +19,36 @@ import {
     FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import z from "zod";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { authClient } from "../../../lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string().min(1, "This field is required"),
     email: z.email("Invalid email"),
     password: z.string().min(8, "Password must be at least 8 characters"),
+    role: z.enum(["CUSTOMER", "SELLER"], {
+        message: "Please select a role",
+    }),
 });
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
     const [showPassword, setShowPassword] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    const [role, setRole] = useState("CUSTOMER");
+    const router = useRouter();
+
     const form = useForm({
         defaultValues: {
             name: "",
             email: "",
             password: "",
+            role: "CUSTOMER",
         },
         validators: {
             onSubmit: formSchema,
@@ -56,6 +65,8 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                 console.log(data);
 
                 toast.success("Registration successful", { id: toastId });
+                router.push("/");
+                router.refresh();
             } catch (error) {
                 console.log(error);
                 toast.error("Something went wrong, please try again.", {
@@ -85,11 +96,19 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                 </Link>
             </Button>
             <Card {...props}>
-                <CardHeader>
-                    <CardTitle>Create an account</CardTitle>
-                    <CardDescription>
-                        Enter your information below to create your account
-                    </CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>Create an account</CardTitle>
+                        <CardDescription>
+                            Enter your information below to create your account
+                        </CardDescription>
+                    </div>
+
+                    <Badge variant="secondary" className="w-20">
+                        {role === "SELLER"
+                            ? "Seller"
+                            : "Customer"}
+                    </Badge>
                 </CardHeader>
                 <CardContent>
                     <form
@@ -243,6 +262,40 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                                         </Field>
                                     );
                                 }}
+                            </form.Field>
+                            <form.Field name="role">
+                                {(field) => (
+                                    <Field>
+                                        <div className="flex items-center justify-between border rounded-full overflow-hidden mt-1 w-full">
+                                            {["CUSTOMER", "SELLER"].map(
+                                                (roleOption) => (
+                                                    <button
+                                                        key={roleOption}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setRole(roleOption);
+                                                            field.handleChange(
+                                                                roleOption,
+                                                            );
+                                                        }}
+                                                        className={`flex-1 px-4 py-2 transition-colors font-medium cursor-pointer ${
+                                                            field.state
+                                                                .value ===
+                                                            roleOption
+                                                                ? "bg-white text-black"
+                                                                : "bg-black text-white"
+                                                        }`}
+                                                    >
+                                                        {roleOption.charAt(0) +
+                                                            roleOption
+                                                                .slice(1)
+                                                                .toLowerCase()}
+                                                    </button>
+                                                ),
+                                            )}
+                                        </div>
+                                    </Field>
+                                )}
                             </form.Field>
                         </FieldGroup>
                     </form>
