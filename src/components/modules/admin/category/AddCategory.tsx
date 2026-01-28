@@ -14,7 +14,6 @@ import { useForm } from "@tanstack/react-form";
 import { Input } from "../../../ui/input";
 import { Field, FieldError, FieldLabel } from "../../../ui/field";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { createCategory } from "../../../../actions/category.action";
 
 const categorySchema = z.object({
@@ -22,7 +21,6 @@ const categorySchema = z.object({
 });
 
 export default function AddCategory() {
-	const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
 
     const form = useForm({
@@ -41,7 +39,6 @@ export default function AddCategory() {
                     return;
                 }
                 toast.success("Category created successful", { id: toastId });
-                router.refresh();
             } catch (error) {
                 console.log(error);
                 toast.error("Something went wrong, please try again.", {
@@ -119,7 +116,7 @@ export default function AddCategory() {
                                 type="submit"
                                 className="w-full cursor-pointer"
                             >
-                                Save
+                                Add Category
                             </Button>
                         </DialogFooter>
                     </form>

@@ -10,7 +10,7 @@ export interface Medicine {
     price: number;
     stock: number;
     manufacturer: string;
-    imageUrl: string | null; // String? in Prisma => string | null in TS
+    imageUrl: string;
 
     categoryId: string;
     sellerId: string;
@@ -23,4 +23,24 @@ export interface Medicine {
     seller?: User;
     orderItems?: OrderItem[];
     reviews?: Review[];
+}
+
+export interface CreateMedicine {
+    name: string;
+    description: string;
+    price: number;
+    stock: number;
+    manufacturer: string;
+    imageUrl: string;
+    categoryId: string;
+    sellerId: string;
+}
+
+export interface UpdateMedicine {
+    name?: string;
+    description?: string;
+    price?: number;
+    stock?: number;
+    manufacturer?: string;
+    imageUrl?: string;
 }

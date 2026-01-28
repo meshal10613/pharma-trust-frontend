@@ -26,65 +26,71 @@ export default function UserTable({ users }: { users: User[] }) {
 
     const handleDelete = (user: User) => {
         console.log(user);
-		toast.info("User delete hasn't implemented yet!");
+        toast.info("User delete hasn't implemented yet!");
     };
 
     return (
         <>
-            <div className="border rounded-md">
-                <Table>
-                    <TableHeader>
-                        <TableRow className="">
-                            <TableHead className="border-r">Sl</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Email</TableHead>
-                            <TableHead>Role</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Extras</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {users.map((user, index) => (
-                            <TableRow key={user.id}>
-                                <TableCell className="border-r">
-                                    {index + 1}
-                                </TableCell>
-                                <TableCell>{user.name}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.role}</TableCell>
-                                <TableCell>
-                                    {user.status ? "Active" : "Banned"}
-                                </TableCell>
-                                <TableCell className="flex users-center justify-center w-fit gap-2">
-                                    <Button
-                                        size={`sm`}
-                                        variant="outline"
-                                        className="cursor-pointer group"
-                                        onClick={() => handleView(user)}
-                                    >
-                                        <Eye className="group-hover:text-green-600" />
-                                    </Button>
-                                    <Button
-                                        size={`sm`}
-                                        variant="outline"
-                                        className="cursor-pointer group"
-                                    >
-                                        <Edit className="group-hover:text-blue-600" />
-                                    </Button>
-                                    <Button
-                                        size={`sm`}
-                                        variant="outline"
-                                        className="cursor-pointer group"
-                                        onClick={() => handleDelete(user)}
-                                    >
-                                        <Trash className="group-hover:text-red-600" />
-                                    </Button>
-                                </TableCell>
+            {users.length === 0 ? (
+                <div className="h-24 text-center text-muted-foreground">
+                    No users found
+                </div>
+            ) : (
+                <div className="border rounded-md">
+                    <Table>
+                        <TableHeader>
+                            <TableRow className="">
+                                <TableHead className="border-r">Sl</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Role</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Extras</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
+                        </TableHeader>
+                        <TableBody>
+                            {users.map((user, index) => (
+                                <TableRow key={user.id}>
+                                    <TableCell className="border-r">
+                                        {index + 1}
+                                    </TableCell>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.role}</TableCell>
+                                    <TableCell>
+                                        {user.status ? "Active" : "Banned"}
+                                    </TableCell>
+                                    <TableCell className="flex users-center justify-center w-fit gap-2">
+                                        <Button
+                                            size={`sm`}
+                                            variant="outline"
+                                            className="cursor-pointer group"
+                                            onClick={() => handleView(user)}
+                                        >
+                                            <Eye className="group-hover:text-green-600" />
+                                        </Button>
+                                        <Button
+                                            size={`sm`}
+                                            variant="outline"
+                                            className="cursor-pointer group"
+                                        >
+                                            <Edit className="group-hover:text-blue-600" />
+                                        </Button>
+                                        <Button
+                                            size={`sm`}
+                                            variant="outline"
+                                            className="cursor-pointer group"
+                                            onClick={() => handleDelete(user)}
+                                        >
+                                            <Trash className="group-hover:text-red-600" />
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            )}
 
             {/* View Dialog */}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
