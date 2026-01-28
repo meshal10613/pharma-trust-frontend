@@ -17,7 +17,7 @@ import { Roles } from "../../constants/role";
 import { adminRoutes } from "../../routes/adminRoutes";
 import { sellerRoutes } from "../../routes/sellerRoutes";
 import { userRoutes } from "../../routes/userRoutes";
-import Logout from "../models/authentication/logout";
+import Logout from "../modules/authentication/logout";
 
 export function AppSidebar({
     user,
@@ -25,7 +25,6 @@ export function AppSidebar({
 }: {
     user: { role: string };
 } & React.ComponentProps<typeof Sidebar>) {
-
     let routes: Routes[] = [];
 
     switch (user.role) {
@@ -49,12 +48,12 @@ export function AppSidebar({
                 {routes.map((item) => (
                     <SidebarGroup key={item.title}>
                         <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-                        <SidebarGroupContent>
+                        <SidebarGroupContent className="mt-5">
                             <SidebarMenu>
                                 {item.items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild>
-                                            <Link href={item.url}>
+                                            <Link href={item.url} className="flex items-center justify-center">
                                                 {item.title}
                                             </Link>
                                         </SidebarMenuButton>
@@ -68,7 +67,9 @@ export function AppSidebar({
             <SidebarFooter>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <Logout/>
+                        <SidebarMenuButton asChild>
+                            <Logout />
+                        </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarFooter>

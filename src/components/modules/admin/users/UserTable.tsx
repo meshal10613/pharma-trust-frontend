@@ -1,0 +1,216 @@
+"use client";
+
+import { useState } from "react";
+import { User } from "../../../../types";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../../../ui/table";
+import { Button } from "../../../ui/button";
+import { Eye, Edit, Trash, CheckCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "../../../ui/dialog";
+import Image from "next/image";
+import { toast } from "sonner";
+export default function UserTable({ users }: { users: User[] }) {
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleView = (user: User) => {
+        setSelectedUser(user);
+        setIsOpen(true);
+    };
+
+    const handleDelete = (user: User) => {
+        console.log(user);
+		toast.info("User delete hasn't implemented yet!");
+    };
+
+    return (
+        <>
+            <div className="border rounded-md">
+                <Table>
+                    <TableHeader>
+                        <TableRow className="">
+                            <TableHead className="border-r">Sl</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Role</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Extras</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {users.map((user, index) => (
+                            <TableRow key={user.id}>
+                                <TableCell className="border-r">
+                                    {index + 1}
+                                </TableCell>
+                                <TableCell>{user.name}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.role}</TableCell>
+                                <TableCell>
+                                    {user.status ? "Active" : "Banned"}
+                                </TableCell>
+                                <TableCell className="flex users-center justify-center w-fit gap-2">
+                                    <Button
+                                        size={`sm`}
+                                        variant="outline"
+                                        className="cursor-pointer group"
+                                        onClick={() => handleView(user)}
+                                    >
+                                        <Eye className="group-hover:text-green-600" />
+                                    </Button>
+                                    <Button
+                                        size={`sm`}
+                                        variant="outline"
+                                        className="cursor-pointer group"
+                                    >
+                                        <Edit className="group-hover:text-blue-600" />
+                                    </Button>
+                                    <Button
+                                        size={`sm`}
+                                        variant="outline"
+                                        className="cursor-pointer group"
+                                        onClick={() => handleDelete(user)}
+                                    >
+                                        <Trash className="group-hover:text-red-600" />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+
+            {/* View Dialog */}
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogContent className="max-w-md w-full p-0 overflow-hidden rounded-2xl border bg-background shadow-xl outline-none">
+                    {selectedUser && (
+                        <>
+                            <div className="relative border-b px-6 pt-6 pb-4">
+                                <div className="flex flex-col items-center gap-3">
+                                    <div className="relative">
+                                        <div className="relative h-24 w-24 rounded-full border-2 border-background ring-2 ring-blue-500/20">
+                                            <Image
+                                                src={
+                                                    selectedUser.image ||
+                                                    "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"
+                                                }
+                                                alt={selectedUser.name}
+                                                fill
+                                                className="rounded-full object-cover"
+                                            />
+                                        </div>
+                                        {selectedUser.emailVerified && (
+                                            <div className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-md">
+                                                <CheckCircle className="h-5 w-5 text-blue-500" />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="text-center space-y-1">
+                                        <DialogTitle className="text-lg font-semibold tracking-tight">
+                                            {selectedUser.name}
+                                        </DialogTitle>
+
+                                        <p className="text-xs text-muted-foreground">
+                                            {selectedUser.email}
+                                        </p>
+
+                                        <div className="mt-1 inline-flex items-center gap-2">
+                                            <span className="rounded-full bg-slate-900/5 px-2.5 py-0.5 text-xs font-medium capitalize dark:text-white text-black">
+                                                {selectedUser.role}
+                                            </span>
+
+                                            <span
+                                                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                                    selectedUser.status
+                                                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100"
+                                                        : "bg-rose-50 text-rose-700 ring-1 ring-rose-100"
+                                                }`}
+                                            >
+                                                <span
+                                                    className={`h-1.5 w-1.5 rounded-full ${
+                                                        selectedUser.status
+                                                            ? "bg-emerald-500"
+                                                            : "bg-rose-500"
+                                                    }`}
+                                                />
+                                                {selectedUser.status
+                                                    ? "Active"
+                                                    : "Banned"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Details section */}
+                            {/* <div className="px-6 py-5 space-y-4 text-sm">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                                            Name
+                                        </p>
+                                        <p className="font-medium capitalize">
+                                            {selectedUser.name}
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                                            Role
+                                        </p>
+                                        <p className="font-medium capitalize">
+                                            {selectedUser.role}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 border-t pt-4">
+                                    <div className="space-y-1">
+                                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                                            Email
+                                        </p>
+                                        <p
+                                            className="max-w-45 truncate text-sm font-medium"
+                                            title={selectedUser.email}
+                                        >
+                                            {selectedUser.email}
+                                        </p>
+                                        <p className="text-[11px] text-muted-foreground">
+                                            {selectedUser.emailVerified
+                                                ? "Verified email"
+                                                : "Not verified"}
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                                            Account Status
+                                        </p>
+                                        <span
+                                            className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold ${
+                                                selectedUser.status
+                                                    ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100"
+                                                    : "bg-rose-50 text-rose-700 ring-1 ring-rose-100"
+                                            }`}
+                                        >
+                                            {selectedUser.status
+                                                ? "Active"
+                                                : "Banned"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> */}
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
+        </>
+    );
+}

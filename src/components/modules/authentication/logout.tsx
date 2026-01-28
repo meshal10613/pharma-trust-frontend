@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "../../../lib/auth-client";
-import { SidebarMenuButton } from "../../ui/sidebar";
+// import { SidebarMenuButton } from "../../ui/sidebar";
 import { LogOut } from "lucide-react";
+import { Button } from "../../ui/button";
 
 export default function Logout() {
     const router = useRouter();
@@ -24,12 +25,13 @@ export default function Logout() {
     };
 
     return (
-        <SidebarMenuButton
+        <Button
+            variant={`outline`}
             onClick={handleLogout}
-            className="text-red-500 hover:text-red-600 flex items-center justify-center cursor-pointer"
+            className="text-red-500 hover:text-red-600 flex items-center justify-center cursor-pointer w-full"
         >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
-        </SidebarMenuButton>
+        </Button>
     );
 }

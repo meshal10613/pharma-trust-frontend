@@ -1,4 +1,4 @@
-import { LoginForm } from "../../../components/models/authentication/login-form";
+import { LoginForm } from "../../../components/modules/authentication/login-form";
 
 export default function LoginPage() {
     return (

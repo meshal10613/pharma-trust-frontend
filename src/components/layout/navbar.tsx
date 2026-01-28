@@ -13,6 +13,7 @@ import {
 import {
     Sheet,
     SheetContent,
+    SheetFooter,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
@@ -25,6 +26,7 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import Logout from "../modules/authentication/logout";
 
 interface MenuItem {
     title: string;
@@ -60,7 +62,7 @@ interface Navbar1Props {
 const Navbar = ({
     user,
     logo = {
-        url: "https://www.shadcnblocks.com",
+        url: "/",
         src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
         alt: "logo",
         title: "Shadcnblocks.com",
@@ -193,7 +195,10 @@ const Navbar = ({
                         <div className="flex items-center gap-3">
                             <ModeToggle />
                             <Sheet>
-                                <SheetTrigger asChild>
+                                <SheetTrigger
+                                    asChild
+                                    className="cursor-pointer"
+                                >
                                     <Button variant="outline" size="icon">
                                         <Menu className="size-4" />
                                     </Button>
@@ -225,22 +230,43 @@ const Navbar = ({
                                                 renderMobileMenuItem(item),
                                             )}
                                         </Accordion>
-
-                                        <div className="flex flex-col gap-3">
-                                            <Button asChild variant="outline">
-                                                <a href={auth.login.url}>
-                                                    {auth.login.title}
-                                                </a>
-                                            </Button>
-                                            <Button asChild>
-                                                <a href={auth.signup.url}>
-                                                    {auth.signup.title}
-                                                </a>
-                                            </Button>
-                                        </div>
                                     </div>
+                                    <SheetFooter>
+                                        {user ? (
+                                            <Logout />
+                                        ) : (
+                                            <div className="flex flex-col gap-3">
+                                                <Button
+                                                    asChild
+                                                    variant="outline"
+                                                >
+                                                    <a href={auth.login.url}>
+                                                        {auth.login.title}
+                                                    </a>
+                                                </Button>
+                                                <Button asChild>
+                                                    <a href={auth.signup.url}>
+                                                        {auth.signup.title}
+                                                    </a>
+                                                </Button>
+                                            </div>
+                                        )}
+                                    </SheetFooter>
                                 </SheetContent>
                             </Sheet>
+                            {user && (
+                                <div className="relative w-8 h-8">
+                                    <Image
+                                        src={
+                                            user.image ||
+                                            `https://img.daisyui.com/images/profile/demo/spiderperson@192.webp`
+                                        }
+                                        alt={user.name || "User"}
+                                        fill
+                                        className="rounded-full"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
