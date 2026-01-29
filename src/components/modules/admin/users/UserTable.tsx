@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User } from "../../../../types";
+import { Role, User, UserStatus } from "../../../../types";
 import {
     Table,
     TableBody,
@@ -11,10 +11,26 @@ import {
     TableRow,
 } from "../../../ui/table";
 import { Button } from "../../../ui/button";
-import { Eye, Edit, Trash, CheckCircle } from "lucide-react";
+import { Eye, Trash, CheckCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "../../../ui/dialog";
 import Image from "next/image";
 import { toast } from "sonner";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "../../../ui/select";
+import { updateUser } from "../../../../actions/user.action";
+
+const roleStyles: Record<string, string> = {
+    ADMIN: "text-purple-600 border-purple-500",
+    SELLER: "text-blue-600 border-blue-500",
+    CUSTOMER: "text-gray-600 border-gray-500",
+};
+
 export default function UserTable({ users }: { users: User[] }) {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +45,49 @@ export default function UserTable({ users }: { users: User[] }) {
         toast.info("User delete hasn't implemented yet!");
     };
 
+    const handleUpdateUser = async (
+        id: string,
+        {
+            status,
+            role,
+        }: {
+            status?: UserStatus;
+            role?: Role;
+        },
+    ) => {
+        const toastId = toast.loading("Updating User Status...");
+        const serverData: Partial<{
+            status: UserStatus;
+            role: Role;
+        }> = {};
+
+        if (status !== undefined) {
+            serverData.status = status;
+        }
+
+        if (role !== undefined) {
+            serverData.role = role;
+        }
+
+        try {
+            const { data, error } = await updateUser(id as string, serverData);
+
+            if (error) {
+                toast.error(error.message, { id: toastId });
+                return;
+            }
+
+            toast.success(data?.message ?? "User updated", {
+                id: toastId,
+            });
+        } catch (err) {
+            console.log(err);
+            toast.error("Something went wrong, please try again.", {
+                id: toastId,
+            });
+        }
+    };
+
     return (
         <>
             {users.length === 0 ? (
@@ -40,7 +99,7 @@ export default function UserTable({ users }: { users: User[] }) {
                     <Table>
                         <TableHeader>
                             <TableRow className="">
-                                <TableHead className="border-r">Sl</TableHead>
+                                <TableHead>Image</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Role</TableHead>
@@ -49,16 +108,102 @@ export default function UserTable({ users }: { users: User[] }) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {users.map((user, index) => (
+                            {users.map((user) => (
                                 <TableRow key={user.id}>
-                                    <TableCell className="border-r">
-                                        {index + 1}
+                                    <TableCell>
+                                        <Image
+                                            src={
+                                                user.image ||
+                                                "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"
+                                            }
+                                            alt={user.name}
+                                            width={40}
+                                            height={40}
+                                            className="rounded-full"
+                                        />
                                     </TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.role}</TableCell>
                                     <TableCell>
-                                        {user.status ? "Active" : "Banned"}
+                                        <Select
+                                            value={user.role as string}
+                                            onValueChange={async (value) => {
+                                                handleUpdateUser(user.id, {
+                                                    role: value as Role,
+                                                });
+                                            }}
+                                        >
+                                            <SelectTrigger
+                                                className={`w-full max-w-32 cursor-pointer font-medium ${
+                                                    roleStyles[user.role]
+                                                }`}
+                                            >
+                                                <SelectValue placeholder="Role" />
+                                            </SelectTrigger>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem
+                                                        value="ADMIN"
+                                                        className="cursor-pointer text-purple-600 focus:text-purple-600"
+                                                    >
+                                                        Admin
+                                                    </SelectItem>
+
+                                                    <SelectItem
+                                                        value="SELLER"
+                                                        className="cursor-pointer text-blue-600 focus:text-blue-600"
+                                                    >
+                                                        Seller
+                                                    </SelectItem>
+
+                                                    <SelectItem
+                                                        value="CUSTOMER"
+                                                        className="cursor-pointer text-gray-600 focus:text-gray -600"
+                                                    >
+                                                        Customer
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Select
+                                            value={user.status}
+                                            onValueChange={(value) => {
+                                                handleUpdateUser(user.id, {
+                                                    status: value as UserStatus,
+                                                });
+                                            }}
+                                        >
+                                            <SelectTrigger
+                                                className={`w-full max-w-30 cursor-pointer font-medium ${
+                                                    user.status === "ACTIVE"
+                                                        ? "text-green-600 border-green-500"
+                                                        : "text-red-600 border-red-500"
+                                                }`}
+                                            >
+                                                <SelectValue placeholder="Status" />
+                                            </SelectTrigger>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem
+                                                        value="ACTIVE"
+                                                        className="cursor-pointer text-green-600 focus:text-green-600"
+                                                    >
+                                                        Active
+                                                    </SelectItem>
+
+                                                    <SelectItem
+                                                        value="BANNED"
+                                                        className="cursor-pointer text-red-600 focus:text-red-600"
+                                                    >
+                                                        Banned
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                     </TableCell>
                                     <TableCell className="flex users-center justify-center w-fit gap-2">
                                         <Button
@@ -69,13 +214,13 @@ export default function UserTable({ users }: { users: User[] }) {
                                         >
                                             <Eye className="group-hover:text-green-600" />
                                         </Button>
-                                        <Button
+                                        {/* <Button
                                             size={`sm`}
                                             variant="outline"
                                             className="cursor-pointer group"
                                         >
                                             <Edit className="group-hover:text-blue-600" />
-                                        </Button>
+                                        </Button> */}
                                         <Button
                                             size={`sm`}
                                             variant="outline"

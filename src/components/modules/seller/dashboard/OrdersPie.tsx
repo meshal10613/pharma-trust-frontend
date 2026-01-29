@@ -9,7 +9,7 @@ export default function OrderStatusPie({
     orderStatusData: { name: string; value: number }[];
 }) {
     return (
-        <Card>
+        <Card className="shadow-md hover:shadow-2xl">
             <CardHeader>
                 <CardTitle>Order Status</CardTitle>
             </CardHeader>

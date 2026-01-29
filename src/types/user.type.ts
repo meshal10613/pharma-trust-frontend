@@ -1,12 +1,12 @@
 export enum Role {
-    CUSTOMER,
-    SELLER,
-    ADMIN,
+    CUSTOMER = "CUSTOMER",
+    SELLER = "SELLER",
+    ADMIN = "ADMIN",
 }
 
 export enum UserStatus {
-    ACTIVE,
-    BANNED
+    ACTIVE="ACTIVE",
+    BANNED="BANNED",
 }
 
 export interface User {
@@ -18,6 +18,14 @@ export interface User {
     phone: string | null;
     role: Role;
     status: UserStatus;
-    createdAt: string; // ISO date string
-    updatedAt: string; // ISO date string
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface UpdateUser {
+    name?: string;
+    image?: string | null;
+    phone?: string | null;
+    role?: Role;
+    status?: UserStatus;
 }

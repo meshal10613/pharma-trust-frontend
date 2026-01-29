@@ -24,7 +24,7 @@ const COLOR_MAP: Record<string, string> = {
     "Placed Amount": "#60a5fa",
     "Processing Amount": "#fb923c",
     "Shipped Amount": "#818cf8",
-    "Delivered Amount": "#34d399", 
+    "Delivered Amount": "#34d399",
     "Cancelled Amount": "#ef4444",
 };
 
@@ -33,7 +33,7 @@ export default async function DashboardPage() {
     if (error) return <h1>{error.message}</h1>;
     if (!data) return <h1>Loading...</h1>;
     const stats = data.data;
-    console.log(stats);
+
     const usersData = [
         { name: "Admin", value: stats.user.admin },
         { name: "Seller", value: stats.user.seller },
@@ -85,13 +85,15 @@ export default async function DashboardPage() {
         }));
 
     return (
-        <div>
+        <div className="p-5">
             <h2 className="text-2xl font-semibold mb-5">Admin Dashboard</h2>
+            <UsersPie usersData={usersData} />
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                <UsersPie usersData={usersData} />
                 <TotalsPie totalsData={totalsData} />
                 <OrderStatusPie orderStatusData={orderStatusData} />
-                <OrderAmountStatusPie orderAmountStatusData={orderAmountStatusData} />
+                <OrderAmountStatusPie
+                    orderAmountStatusData={orderAmountStatusData}
+                />
             </div>
         </div>
     );

@@ -1,13 +1,14 @@
 import UserTable from "../../../../../components/modules/admin/users/UserTable";
 import { userService } from "../../../../../services/user.service";
+import { User } from "../../../../../types";
 
 export const metadata = {
     title: "User Management | Admin Dashboard",
 };
 
 export default async function UsersPage() {
-    const { data } = await userService.getAllUsers();
-    const users = data.data;
+    const [u] = await Promise.all([userService.getAllUsers()]);
+    const users: User[] = u?.data?.data;
 
     return (
         <div>

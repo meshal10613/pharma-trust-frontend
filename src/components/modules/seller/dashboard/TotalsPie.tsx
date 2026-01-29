@@ -9,7 +9,7 @@ export default function TotalsPie({
     totalsData: { name: string; value: number }[];
 }) {
     return (
-        <Card>
+        <Card className="shadow-md hover:shadow-2xl">
             <CardHeader>
                 <CardTitle>Overall Totals</CardTitle>
             </CardHeader>
