@@ -33,7 +33,7 @@ export default async function DashboardPage() {
     if (error) return <h1>{error.message}</h1>;
     if (!data) return <h1>Loading...</h1>;
     const stats = data.data;
-
+    
     const usersData = [
         { name: "Admin", value: stats.user.admin },
         { name: "Seller", value: stats.user.seller },

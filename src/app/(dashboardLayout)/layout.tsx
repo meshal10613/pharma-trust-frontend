@@ -15,6 +15,11 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { userService } from "../../services/user.service";
+import { Routes } from "../../types";
+import { Roles } from "../../constants/role";
+import { adminRoutes } from "../../routes/adminRoutes";
+import { sellerRoutes } from "../../routes/sellerRoutes";
+import { userRoutes } from "../../routes/userRoutes";
 
 type Role = "ADMIN" | "SELLER" | "CUSTOMER";
 
@@ -39,6 +44,23 @@ export default async function DashboardLayout({
 
     if (!role) return null;
 
+    let routes: Routes[] = [];
+
+    switch (user.role) {
+        case Roles.admin:
+            routes = adminRoutes;
+            break;
+        case Roles.seller:
+            routes = sellerRoutes;
+            break;
+        case Roles.customer:
+            routes = userRoutes;
+            break;
+        default:
+            routes = [];
+            break;
+    }
+
     return (
         <SidebarProvider>
             <AppSidebar user={user} />
@@ -54,7 +76,7 @@ export default async function DashboardLayout({
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
                                     <BreadcrumbLink href="#">
-                                        Building Your Application
+                                        {routes[0].title}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />

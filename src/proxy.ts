@@ -9,12 +9,13 @@ export async function proxy(request: NextRequest) {
     let isSeller = false;
 
     const { data } = await userService.getSession();
+
     if (data) {
         isAuthenticated = true;
-        isAdmin = data.role === "ADMIN";
-        isSeller = data.role === "SELLER";
+        isAdmin = data.user.role === "ADMIN";
+        isSeller = data.user.role === "SELLER";
     }
-	console.log(data)
+
     if (!isAuthenticated) {
         return NextResponse.redirect(new URL("/login", request.url));
     }

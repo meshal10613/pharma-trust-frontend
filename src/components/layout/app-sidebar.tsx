@@ -18,6 +18,8 @@ import { adminRoutes } from "../../routes/adminRoutes";
 import { sellerRoutes } from "../../routes/sellerRoutes";
 import { userRoutes } from "../../routes/userRoutes";
 import Logout from "../modules/authentication/logout";
+import Image from "next/image";
+import logo from "../../../public/logo.png";
 
 export function AppSidebar({
     user,
@@ -47,13 +49,23 @@ export function AppSidebar({
             <SidebarContent>
                 {routes.map((item) => (
                     <SidebarGroup key={item.title}>
-                        <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+                        <SidebarGroupLabel className="flex items-center justify-center my-3">
+                            <Link
+                                href={`/`}
+                                className="flex items-center gap-2 relative w-35 h-10"
+                            >
+                                <Image src={logo} alt={`logo`} fill />
+                            </Link>
+                        </SidebarGroupLabel>
                         <SidebarGroupContent className="mt-5">
                             <SidebarMenu>
                                 {item.items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild>
-                                            <Link href={item.url} className="flex items-center justify-center">
+                                            <Link
+                                                href={item.url}
+                                                className="flex items-center justify-center"
+                                            >
                                                 {item.title}
                                             </Link>
                                         </SidebarMenuButton>

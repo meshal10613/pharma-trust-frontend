@@ -5,7 +5,7 @@ export default function UsersPie({
 }: {
     usersData: { name: string; value: number }[];
 }) {
-    console.log(usersData);
+
     const totalUsers: number = usersData.reduce(
         (total, user) => total + user.value,
         0,
@@ -70,7 +70,7 @@ const StatsCard: React.FC<StatsCardProps> = ({
     color,
 }) => {
     return (
-        <div className="flex-1 bg-white shadow-md hover:shadow-2xl rounded-lg p-4 flex flex-col gap-2">
+        <div className="flex-1 border border-accent shadow-md hover:shadow-2xl rounded-lg p-4 flex flex-col gap-2">
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-gray-500 text-sm">{title}</p>

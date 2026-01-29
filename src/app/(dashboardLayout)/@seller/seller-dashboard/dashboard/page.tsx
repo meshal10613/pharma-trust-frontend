@@ -19,10 +19,10 @@ export default async function DashboardPage() {
     const { data, error } = await userService.getSellerStats();
     if (error) return <h1>{error.message}</h1>;
     if (!data) return <h1>Loading...</h1>;
-    const stats = data.data;
+    const stats = data?.data;
 
     const totalsData = [
-        { name: "Category", value: stats.category.total },
+        { name: "Category", value: stats?.category.total },
         { name: "Order", value: stats.order.total },
         { name: "Medicine", value: stats.medicine.total },
         { name: "Review", value: stats.review.total },
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-5">Seller Dashboard</h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
                 <TotalsPie totalsData={totalsData} />
                 <OrderStatusPie orderStatusData={orderStatusData} />
             </div>

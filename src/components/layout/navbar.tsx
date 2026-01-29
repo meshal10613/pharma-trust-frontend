@@ -21,12 +21,13 @@ import {
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
 import { User } from "@/types";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import Logout from "../modules/authentication/logout";
+import l from "../../../public/logo.png";
+import mlogo from "../../../public/l.png";
 
 interface MenuItem {
     title: string;
@@ -41,9 +42,9 @@ interface Navbar1Props {
     className?: string;
     logo?: {
         url: string;
-        src: string;
+        src: StaticImageData;
+        msrc: StaticImageData;
         alt: string;
-        title: string;
         className?: string;
     };
     menu?: MenuItem[];
@@ -63,9 +64,9 @@ const Navbar = ({
     user,
     logo = {
         url: "/",
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
+        src: l,
+        msrc: mlogo,
         alt: "logo",
-        title: "Shadcnblocks.com",
     },
     menu = [
         { title: "Home", url: "/" },
@@ -75,7 +76,7 @@ const Navbar = ({
         },
         {
             title: "Dashboard",
-            url: "/dashboard",
+            url: "/dashboard/customer-dashboard",
         },
     ],
     auth = {
@@ -105,20 +106,12 @@ const Navbar = ({
                 <nav className="hidden items-center justify-between lg:flex">
                     <div className="flex items-center gap-6">
                         {/* Logo */}
-                        <a
+                        <Link
                             href={logo.url}
-                            className="flex items-center gap-2 relative"
+                            className="flex items-center gap-2 relative w-35 h-10"
                         >
-                            <Image
-                                src={logo.src}
-                                className="max-h-8 dark:invert"
-                                alt={logo.alt}
-                                fill
-                            />
-                            <span className="text-lg font-semibold tracking-tighter">
-                                {logo.title}
-                            </span>
-                        </a>
+                            <Image src={logo.src} alt={logo.alt} fill />
+                        </Link>
                         <div className="flex items-center">
                             <NavigationMenu>
                                 <NavigationMenuList>
@@ -140,22 +133,15 @@ const Navbar = ({
                                     Logout
                                 </Button>
                                 <div className="relative w-10 h-10">
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Image
-                                                src={
-                                                    user.image ||
-                                                    `https://img.daisyui.com/images/profile/demo/spiderperson@192.webp`
-                                                }
-                                                alt={user.name}
-                                                fill
-                                                className="rounded-full"
-                                            />
-                                        </TooltipTrigger>
-                                        <TooltipContent side="bottom">
-                                            <p>{user.name}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
+                                    <Image
+                                        src={
+                                            user.image ||
+                                            `https://img.daisyui.com/images/profile/demo/spiderperson@192.webp`
+                                        }
+                                        alt={user.name}
+                                        fill
+                                        className="rounded-full"
+                                    />
                                 </div>
                             </div>
                         ) : (
@@ -183,15 +169,12 @@ const Navbar = ({
                 <div className="block lg:hidden">
                     <div className="flex items-center justify-between">
                         {/* Logo */}
-                        <a href={logo.url} className="flex items-center gap-2">
-                            <Image
-                                src={logo.src}
-                                className="max-h-8 dark:invert"
-                                alt={logo.alt}
-                                width={100}
-                                height={100}
-                            />
-                        </a>
+                        <Link
+                            href={logo.url}
+                            className="flex items-center gap-2 relative w-10 h-10"
+                        >
+                            <Image src={logo.msrc} alt={logo.alt} fill />
+                        </Link>
                         <div className="flex items-center gap-3">
                             <ModeToggle />
                             <Sheet>
@@ -212,7 +195,7 @@ const Navbar = ({
                                             >
                                                 <Image
                                                     src={logo.src}
-                                                    className="max-h-8 dark:invert"
+                                                    className="max-h-8"
                                                     alt={logo.alt}
                                                     width={100}
                                                     height={100}

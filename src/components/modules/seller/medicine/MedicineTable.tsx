@@ -147,7 +147,7 @@ export default function MedicineTable({
                 </div>
             ) : (
                 <div className="border rounded-md">
-                    <Table>
+                    <Table className="bg-[FAFAFA] dark:bg-[#171717]">
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="border-r">Sl</TableHead>
@@ -165,7 +165,7 @@ export default function MedicineTable({
                                         {index + 1}
                                     </TableCell>
                                     <TableCell>{medicine.name}</TableCell>
-                                    <TableCell>{medicine.price}</TableCell>
+                                    <TableCell>৳{medicine.price}</TableCell>
                                     <TableCell>{medicine.stock}</TableCell>
                                     <TableCell>
                                         {medicine.category?.name ?? "—"}
