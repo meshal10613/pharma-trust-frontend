@@ -16,7 +16,7 @@ export default function CategoryHome({
                         key={category.id}
                         className="shadow-md hover:shadow-2xl flex flex-col items-center justify-center gap-2"
                     >
-                        <h2 className="text-2xl font-semibold mb-5">
+                        <h2 className="text-2xl font-semibold mb-5 flex items-center justify-center flex-wrap text-center">
                             {category.name}
                         </h2>
 						<Badge variant={`outline`} className="text-[#2B93C4]">Medicines: {category.medicines.length}</Badge>

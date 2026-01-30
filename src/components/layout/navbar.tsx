@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,8 @@ import { useRouter } from "next/navigation";
 import Logout from "../modules/authentication/logout";
 import l from "../../../public/logo.png";
 import mlogo from "../../../public/l.png";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface MenuItem {
     title: string;
@@ -71,8 +73,8 @@ const Navbar = ({
     menu = [
         { title: "Home", url: "/" },
         {
-            title: "About",
-            url: "/about",
+            title: "Medicines",
+            url: "/medicines",
         },
         {
             title: "Dashboard",
@@ -85,6 +87,8 @@ const Navbar = ({
     },
     className,
 }: Navbar1Props) => {
+    const cart = useSelector((state: RootState) => state.cart.items);
+    const totalCart = cart.reduce((acc, item) => acc + item.quantity, 0);
     const router = useRouter();
     const handleLogout = async () => {
         const toastId = toast.loading("Logging out...");
@@ -121,6 +125,15 @@ const Navbar = ({
                         </div>
                     </div>
                     <div className="flex gap-2">
+                        <Link
+                            href={`/cart`}
+                            className="relative mr-2 flex items-center justify-center"
+                        >
+                            <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+                            <span className="absolute -right-2 -top-1 bg-primary text-white dark:text-black rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                {totalCart}
+                            </span>
+                        </Link>
                         <ModeToggle />
                         {user ? (
                             <div className="flex gap-2">
@@ -176,6 +189,15 @@ const Navbar = ({
                             <Image src={logo.msrc} alt={logo.alt} fill />
                         </Link>
                         <div className="flex items-center gap-3">
+                            <Link
+                                href={`/cart`}
+                                className="relative mr-2 flex items-center justify-center"
+                            >
+                                <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+                                <span className="absolute -right-2 -top-1 bg-primary text-white dark:text-black rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                    {totalCart}
+                                </span>
+                            </Link>
                             <ModeToggle />
                             <Sheet>
                                 <SheetTrigger

@@ -34,6 +34,34 @@ export const medicineService = {
         }
     },
 
+    getMedicineById: async (id: string) => {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${API_URL}/medicine/${id}`, {
+                headers: {
+                    Cookie: cookieStore.toString(),
+                },
+                cache: "no-store",
+            });
+            const session = await res.json();
+            if (session === null) {
+                return {
+                    data: null,
+                    error: { message: "No medicine found", error: null },
+                };
+            }
+
+            return { data: session, error: null };
+        } catch (error) {
+            console.log(error);
+            return {
+                data: null,
+                error: { message: "Something went wrong", error },
+            };
+        }
+    },
+
     deleteMedicine: async (id: string) => {
         try {
             const cookieStore = await cookies();
