@@ -2,6 +2,7 @@ import Image from "next/image";
 import banner from "../../../../public/banner.avif";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Pill } from "lucide-react";
+import Link from "next/link";
 
 export default function Banner() {
     return (
@@ -37,19 +38,21 @@ export default function Banner() {
                     </p>
 
                     <div className="flex flex-row gap-4 pt-4">
-                        <Button
-                            size="lg"
-                            className="text-lg px-8 bg-[#2B93C4] hover:bg-[#2B93C4] font-semibold cursor-pointer"
-                        >
-                            Shop Now
-                        </Button>
+                        <Link href={`#medicine-home`}>
+                            <Button
+                                size="lg"
+                                className="text-lg px-8 bg-[#2B93C4] hover:bg-[#2B93C4] font-semibold cursor-pointer"
+                            >
+                                Shop Now
+                            </Button>
+                        </Link>
 
                         <Button
                             variant="outline"
                             size="lg"
-                            className="text-lg px-8 text-white bg-transparent hover:bg-white transition-colors cursor-pointer"
+                            className="text-lg px-8 text-white hover:text-primary bg-transparent hover:bg-white transition-colors cursor-pointer"
                         >
-                            Upload Prescription
+                            Get Started
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </div>

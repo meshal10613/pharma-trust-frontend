@@ -104,17 +104,16 @@ export default function Footer() {
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 text-primary shrink-0" />
                                 <span>
-                                    123 Health Avenue, Medical District, NY
-                                    10001, USA
+                                    H-352, Amirabad, Nalchity, Jhalakathi, Barisal - 8200
                                 </span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                                <span>+1 (555) 123-4567</span>
+                                <span>+880 1764 447574</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="w-5 h-5 text-primary shrink-0" />
-                                <span>support@pharmatrust.com</span>
+                                <span>syedmohiuddinmeshal24@gmail.com</span>
                             </li>
                         </ul>
                     </div>
@@ -149,7 +148,6 @@ export default function Footer() {
     );
 }
 
-// Helper Components for cleaner code
 function FooterLink({
     href,
     children,
@@ -173,7 +171,7 @@ function SocialLink({ href, icon }: { href: string; icon: React.ReactNode }) {
     return (
         <Link
             href={href}
-            className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
         >
             {icon}
         </Link>

@@ -2,12 +2,7 @@
 
 import Image from "next/image";
 import { Medicine } from "../../../types";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from "../../ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "../../ui/card";
 import { Badge } from "../../ui/badge";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../../ui/button";
@@ -27,7 +22,16 @@ export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
 
     return (
         <div className="my-20">
-            <h2 className="text-2xl font-semibold mb-5 mx-5">Medicines</h2>
+            <h2
+                id="medicine-home"
+                className="text-3xl md:text-4xl font-semibold mb-5 text-center text-primary"
+            >
+                Medicines
+            </h2>
+            <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10">
+                Browse our wide range of high-quality medicines, carefully
+                sourced from trusted sellers to ensure your health and safety.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 mx-5">
                 {medicines.map((medicine: Medicine) => (
                     <Card

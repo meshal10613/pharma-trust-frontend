@@ -4,6 +4,7 @@ import MedicineHome from "../../components/modules/home/MedicineHome";
 import { categoryService } from "../../services/category.service";
 import { Category, Medicine } from "../../types";
 import { medicineService } from "../../services/medicine.service";
+import WhyChooseUs from "../../components/modules/home/WhyChooseUs";
 
 export default async function Home() {
     const [c, m] = await Promise.all([
@@ -19,6 +20,7 @@ export default async function Home() {
             <Banner />
             <CategoryHome categories={categories} />
             <MedicineHome medicines={medicines} />
+            <WhyChooseUs/>
         </div>
     );
 }
