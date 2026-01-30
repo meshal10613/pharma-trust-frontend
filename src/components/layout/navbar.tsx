@@ -153,7 +153,7 @@ const Navbar = ({
                                         }
                                         alt={user.name}
                                         fill
-                                        className="rounded-full"
+                                        className="rounded-full object-cover"
                                     />
                                 </div>
                             </div>
@@ -268,7 +268,7 @@ const Navbar = ({
                                         }
                                         alt={user.name || "User"}
                                         fill
-                                        className="rounded-full"
+                                        className="rounded-full object-cover"
                                     />
                                 </div>
                             )}

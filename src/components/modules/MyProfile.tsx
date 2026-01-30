@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { User } from "../../types";
+import { User, UserStatus } from "../../types";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -224,7 +224,7 @@ export default function MyProfile({ user }: { user: User }) {
                                     return (
                                         <Field data-invalid={isInvalid}>
                                             <FieldLabel htmlFor={field.name}>
-                                                Image
+                                                Status
                                             </FieldLabel>
 
                                             <Input
@@ -234,7 +234,7 @@ export default function MyProfile({ user }: { user: User }) {
                                                 value={field.state.value}
                                                 onChange={(e) =>
                                                     field.handleChange(
-                                                        e.target.value,
+                                                        e.target.value as UserStatus,
                                                     )
                                                 }
                                                 readOnly
