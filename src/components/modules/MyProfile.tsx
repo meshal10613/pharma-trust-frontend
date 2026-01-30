@@ -103,6 +103,7 @@ export default function MyProfile({ user }: { user: User }) {
                                 e.preventDefault();
                                 form.handleSubmit();
                             }}
+                            className="space-y-5"
                         >
                             <FieldGroup className="name">
                                 <form.Field name="name">

@@ -2,7 +2,7 @@ import { userService } from "../../../../../services/user.service";
 import OrderStatusPie from "../../../../../components/modules/seller/dashboard/OrdersPie";
 import TotalsPie from "../../../../../components/modules/seller/dashboard/TotalsPie";
 import UsersPie from "../../../../../components/modules/admin/dashboard/UsersPie";
-import OrderAmountStatusPie from "../../../../../components/modules/admin/dashboard/OrderAmountStatusPie";
+import OrderAmountStatus from "../../../../../components/modules/admin/dashboard/OrderAmountStatusPie";
 
 const COLOR_MAP: Record<string, string> = {
     Admin: "#2563eb",
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
                 <TotalsPie totalsData={totalsData} />
                 <OrderStatusPie orderStatusData={orderStatusData} />
-                <OrderAmountStatusPie
+                <OrderAmountStatus
                     orderAmountStatusData={orderAmountStatusData}
                 />
             </div>

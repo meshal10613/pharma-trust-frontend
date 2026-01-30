@@ -7,13 +7,13 @@ import {
     CardContent,
     CardFooter,
     CardHeader,
-    CardTitle,
 } from "../../ui/card";
 import { Badge } from "../../ui/badge";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../../ui/button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../store/slice/cartSlice";
+import Link from "next/link";
 
 export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
     const dispatch = useDispatch();
@@ -68,12 +68,13 @@ export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
                                     <p className="text-xs text-muted-foreground font-medium mb-1 uppercase tracking-wider">
                                         {medicine.manufacturer}
                                     </p>
-                                    <CardTitle
+                                    <Link
+                                        href={`/medicines/${medicine.id}`}
                                         className="text-xl line-clamp-1"
                                         title={medicine.name}
                                     >
                                         {medicine.name}
-                                    </CardTitle>
+                                    </Link>
                                 </div>
                             </div>
                         </CardHeader>

@@ -143,4 +143,38 @@ export const orderService = {
             };
         }
     },
+
+    getMyOrders: async (id: string) => {
+        try {
+            const cookieStore = await cookies();
+            const res = await fetch(`${API_URL}/order/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Cookie: cookieStore.toString(),
+                },
+                cache: "no-store",
+            });
+
+            if (!res.ok) {
+                const errBody = await res.json().catch(() => null);
+                return {
+                    data: null,
+                    error: {
+                        message: errBody?.message ?? "Failed to get order",
+                        error: errBody ?? null,
+                    },
+                };
+            }
+
+            const updated = await res.json();
+            return { data: updated, error: null };
+        } catch (error) {
+            console.log(error);
+            return {
+                data: null,
+                error: { message: "Something went wrong", error },
+            };
+        }
+    },
 };

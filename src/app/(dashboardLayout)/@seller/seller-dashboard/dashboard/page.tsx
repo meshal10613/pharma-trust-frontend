@@ -1,6 +1,7 @@
 import OrderStatusPie from "../../../../../components/modules/seller/dashboard/OrdersPie";
 import TotalsPie from "../../../../../components/modules/seller/dashboard/TotalsPie";
 import { userService } from "../../../../../services/user.service";
+import OrderAmountStatus from "../../../../../components/modules/admin/dashboard/OrderAmountStatusPie";
 
 const COLOR_MAP: Record<string, string> = {
     Category: "#2563eb",
@@ -13,6 +14,12 @@ const COLOR_MAP: Record<string, string> = {
     Shipped: "#7c3aed",
     Delivered: "#16a34a",
     Cancelled: "#dc2626",
+
+    "Placed Amount": "#60a5fa",
+    "Processing Amount": "#fb923c",
+    "Shipped Amount": "#818cf8",
+    "Delivered Amount": "#34d399",
+    "Cancelled Amount": "#ef4444",
 };
 
 export default async function DashboardPage() {
@@ -46,12 +53,28 @@ export default async function DashboardPage() {
             fill: COLOR_MAP[item.name],
         }));
 
+    const orderAmountStatusData = [
+        { name: "Placed Amount", value: stats.order.placedAmount },
+        { name: "Processing Amount", value: stats.order.processingAmount },
+        { name: "Shipped Amount", value: stats.order.shippedAmount },
+        { name: "Delivered Amount", value: stats.order.deliveredAmount },
+        { name: "Cancelled Amount", value: stats.order.cancelledAmount },
+    ]
+        .filter((item) => item.value > 0)
+        .map((item) => ({
+            ...item,
+            fill: COLOR_MAP[item.name],
+        }));
+
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-5">Seller Dashboard</h2>
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
                 <TotalsPie totalsData={totalsData} />
                 <OrderStatusPie orderStatusData={orderStatusData} />
+                <OrderAmountStatus
+                    orderAmountStatusData={orderAmountStatusData}
+                />
             </div>
         </div>
     );

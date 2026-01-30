@@ -4,18 +4,37 @@ import { CreateMedicine, UpdateMedicine } from "../types";
 
 const API_URL = env.API_URL;
 
+interface GetMedicineParams {
+    search?: string;
+    page?: string;
+}
+
 export const medicineService = {
-    getAllMedicines: async () => {
+    getAllMedicines: async (params?: GetMedicineParams) => {
         try {
             const cookieStore = await cookies();
+            const url = new URL(`${API_URL}/medicine`);
 
-            const res = await fetch(`${API_URL}/medicine`, {
+            if (params) {
+                Object.entries(params).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null && value !== "") {
+                        url.searchParams.set(key, value);
+                    }
+                });
+            }
+
+            const config: RequestInit = {
                 headers: {
                     Cookie: cookieStore.toString(),
                 },
-                cache: "no-store",
-                next: { tags: ["medicines"] },
-            });
+            };
+
+            config.next = {
+                ...config.next,
+                tags: ["medicines"],
+            };
+            
+            const res = await fetch(url.toString(), config);
             const session = await res.json();
             if (session === null) {
                 return {

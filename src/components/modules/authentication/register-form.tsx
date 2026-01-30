@@ -104,7 +104,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                         </CardDescription>
                     </div>
 
-                    <Badge variant="secondary" className="w-20">
+                    <Badge variant="default" className="w-20">
                         {role === "SELLER"
                             ? "Seller"
                             : "Customer"}
@@ -282,8 +282,8 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                                                             field.state
                                                                 .value ===
                                                             roleOption
-                                                                ? "bg-white text-black"
-                                                                : "bg-black text-white"
+                                                                ? "bg-primary text-white"
+                                                                : "bg-white text-black dark:bg-black dark:text-white"
                                                         }`}
                                                     >
                                                         {roleOption.charAt(0) +

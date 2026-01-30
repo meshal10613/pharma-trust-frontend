@@ -217,7 +217,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                     <Button
                         form="login-form"
                         type="submit"
-                        className="w-full cursor-pointer"
+                        className="w-full cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4]"
                     >
                         Login
                     </Button>
@@ -225,7 +225,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                         onClick={() => handleGoogleLogin()}
                         variant="outline"
                         type="button"
-                        className="w-full cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4]"
+                        className="w-full cursor-pointer"
                     >
                         <FcGoogle /> Sign in with Google
                     </Button>
