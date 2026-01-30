@@ -1,27 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Medicine } from "../../types";
-import { loadCartFromStorage } from "../../utils/cartStorage";
 
-export interface CartItem {
+export interface CheckoutItem {
     medicine: Medicine;
     quantity: number;
 }
 
-export interface CartState {
-    items: CartItem[];
+export interface CheckoutState {
+    items: CheckoutItem[];
 }
 
-const initialState: CartState = {
-    items: loadCartFromStorage(),
+const initialState: CheckoutState = {
+    items: [],
 };
 
-const cartSlice = createSlice({
-    name: "cart",
+const checkoutSlice = createSlice({
+    name: "checkout",
     initialState,
     reducers: {
-        addToCart: (
+        addToCheckout: (
             state,
-            action: PayloadAction<{medicine: Medicine; quantity?: number}>,
+            action: PayloadAction<{ medicine: Medicine; quantity?: number }>,
         ) => {
             const { medicine, quantity = 1 } = action.payload;
 
@@ -39,7 +38,7 @@ const cartSlice = createSlice({
             }
         },
 
-        removeOneFromCart: (state, action: PayloadAction<string>) => {
+        removeOneFromCheckout: (state, action: PayloadAction<string>) => {
             const itemIndex = state.items.findIndex(
                 (item) => item.medicine.id === action.payload,
             );
@@ -53,27 +52,27 @@ const cartSlice = createSlice({
             }
         },
 
-        removeFromCart: (state, action: PayloadAction<string>) => {
+        removeFromCheckout: (state, action: PayloadAction<string>) => {
             state.items = state.items.filter(
                 (item) => item.medicine.id !== action.payload,
             );
         },
 
-        clearCart: (state) => {
+        clearCheckout: (state) => {
             state.items = [];
         },
 
-        hydrateCart: (state, action: PayloadAction<CartItem[]>) => {
+        hydrateCheckout: (state, action: PayloadAction<CheckoutItem[]>) => {
             state.items = action.payload;
         },
     },
 });
 
 export const {
-    addToCart,
-    removeOneFromCart,
-    removeFromCart,
-    clearCart,
-    hydrateCart,
-} = cartSlice.actions;
-export const cartReducer = cartSlice.reducer;
+    addToCheckout,
+    removeOneFromCheckout,
+    removeFromCheckout,
+    clearCheckout,
+    hydrateCheckout,
+} = checkoutSlice.actions;
+export const checkoutReducer = checkoutSlice.reducer;

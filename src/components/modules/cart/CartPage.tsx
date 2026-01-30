@@ -12,6 +12,9 @@ import {
 import Image from "next/image";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
+import Link from "next/link";
+import { Badge } from "../../ui/badge";
+import { addToCheckout, clearCheckout } from "../../../store/slice/checkoutSlice";
 
 export default function CartPage() {
     const router = useRouter();
@@ -24,11 +27,8 @@ export default function CartPage() {
     );
 
     const handleAddToCheckout = () => {
-        // cart.map((item) =>
-        //     dispatch(
-        //         ad
-        //     ),
-        // );
+        dispatch(clearCheckout());
+        cart.map((item) => dispatch(addToCheckout(item)));
         router.push("/checkout");
     };
 
@@ -39,13 +39,18 @@ export default function CartPage() {
                     <h2 className="text-xl lg:text-2xl font-semibold">
                         My Cart
                     </h2>
-                    <h4 className="">{totalCart} Items</h4>
+                    <Badge
+                        variant="outline"
+                        className="bg-white text-[#2B93C4] dark:bg-black dark:text-[#2B93C4]"
+                    >
+                        {totalCart} Items
+                    </Badge>
                 </div>
                 <Separator />
 
                 <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full border-collapse">
-                        <thead className="bg-gray-100">
+                        <thead className="bg-gray-100 dark:bg-[#171717]">
                             <tr className="text-left">
                                 <th className="p-4">Product</th>
                                 <th className="p-4 text-center">Quantity</th>
@@ -58,7 +63,10 @@ export default function CartPage() {
                             {cart.map((item: CartItem, index) => (
                                 <tr key={index} className="">
                                     <td className="p-4">
-                                        <div className="flex items-center gap-4">
+                                        <Link
+                                            href={`/medicines/${item.medicine.id}`}
+                                            className="flex items-center gap-4"
+                                        >
                                             <Image
                                                 src={item.medicine.imageUrl}
                                                 alt={item.medicine.name}
@@ -71,7 +79,7 @@ export default function CartPage() {
                                                     {item.medicine.name}
                                                 </h2>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </td>
 
                                     <td className="p-4">
@@ -183,7 +191,7 @@ export default function CartPage() {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-col gap-3 p-3 border-2 border-[#E7E7E8] rounded-md h-fit">
+            <div className="flex flex-col gap-3 p-3 border-2 border-[#E7E7E8] dark:border-[#171717] rounded-md h-fit">
                 <h2 className="text-xl font-semibold text-left">
                     Order Summary
                 </h2>
@@ -203,7 +211,7 @@ export default function CartPage() {
                 <Button
                     onClick={handleAddToCheckout}
                     size="lg"
-                    className="cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4]"
+                    className="cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4] dark:text-white"
                 >
                     Checkout
                 </Button>
