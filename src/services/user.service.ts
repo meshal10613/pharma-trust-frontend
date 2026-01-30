@@ -92,6 +92,34 @@ export const userService = {
         }
     },
 
+    getCustomerStats: async () => {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${API_URL}/user/customer/stats`, {
+                headers: {
+                    Cookie: cookieStore.toString(),
+                },
+                cache: "no-store",
+            });
+            const session = await res.json();
+            if (session === null) {
+                return {
+                    data: null,
+                    error: { message: "No session found", error: null },
+                };
+            }
+
+            return { data: session, error: null };
+        } catch (error) {
+            console.error(error);
+            return {
+                data: null,
+                error: { message: "Something went wrong", error },
+            };
+        }
+    },
+
     getSellerStats: async () => {
         try {
             const cookieStore = await cookies();
