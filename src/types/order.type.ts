@@ -42,3 +42,13 @@ export interface OrderItem {
     order?: Order;
     medicine?: Medicine;
 }
+
+export interface CreateOrder {
+    customerId: string;
+    shippingAddress: string;
+    items: {
+        medicineId: string;
+        quantity: number;
+        price: number;
+    }[]
+}

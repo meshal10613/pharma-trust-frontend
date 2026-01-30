@@ -304,9 +304,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                     <Button
                         form="register-form"
                         type="submit"
-                        className="w-full cursor-pointer"
+                        className="w-full cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4]"
                     >
-                        Submit
+                        Register
                     </Button>
                     <Button
                         onClick={() => handleGoogleLogin()}

@@ -219,13 +219,13 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                         type="submit"
                         className="w-full cursor-pointer"
                     >
-                        Submit
+                        Login
                     </Button>
                     <Button
                         onClick={() => handleGoogleLogin()}
                         variant="outline"
                         type="button"
-                        className="w-full cursor-pointer"
+                        className="w-full cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4]"
                     >
                         <FcGoogle /> Sign in with Google
                     </Button>

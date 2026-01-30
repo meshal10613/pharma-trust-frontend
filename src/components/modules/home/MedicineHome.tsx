@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Medicine } from "../../../types";
 import {
@@ -10,8 +12,19 @@ import {
 import { Badge } from "../../ui/badge";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../../ui/button";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../store/slice/cartSlice";
 
 export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
+    const dispatch = useDispatch();
+    const handleAddToCart = (medicine: Medicine) => {
+        const data = {
+            medicine,
+            quantity: 1,
+        };
+        dispatch(addToCart(data));
+    };
+
     return (
         <div className="my-20">
             <h2 className="text-2xl font-semibold mb-5 mx-5">Medicines</h2>
@@ -84,9 +97,10 @@ export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
                             </div>
 
                             <Button
+                                onClick={() => handleAddToCart(medicine)}
                                 disabled={medicine.stock === 0}
                                 size="sm"
-                                className="gap-2 cursor-pointer"
+                                className="gap-2 cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4]"
                             >
                                 <ShoppingCart className="w-4 h-4" />
                                 {medicine.stock === 0

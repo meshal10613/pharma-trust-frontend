@@ -10,8 +10,11 @@ import { Button } from "../../ui/button";
 import { Minus, Plus, ShoppingCart, Zap } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../store/slice/cartSlice";
+import { addToCheckout } from "../../../store/slice/checkoutSlice";
+import { useRouter } from "next/navigation";
 
 export default function MedicinesDetails({ medicine }: { medicine: Medicine }) {
+    const router = useRouter();
 	const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
 
@@ -36,7 +39,8 @@ export default function MedicinesDetails({ medicine }: { medicine: Medicine }) {
             medicine,
             quantity,
         };
-        console.log(data);
+        dispatch(addToCheckout(data));
+        router.push("/checkout");
     };
 
     return (

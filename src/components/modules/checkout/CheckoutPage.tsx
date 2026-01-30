@@ -9,6 +9,7 @@ import { Separator } from "../../ui/separator";
 import {
     addToCheckout,
     CheckoutItem,
+    clearCheckout,
     removeFromCheckout,
     removeOneFromCheckout,
 } from "../../../store/slice/checkoutSlice";
@@ -19,6 +20,10 @@ import { toast } from "sonner";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
 import { Textarea } from "../../ui/textarea";
+import { User } from "../../../types";
+import { createOrder } from "../../../actions/order.action";
+import { useRouter } from "next/navigation";
+import { clearCart } from "../../../store/slice/cartSlice";
 
 const formSchema = z.object({
     name: z.string().min(2, "Name is required"),
@@ -26,7 +31,8 @@ const formSchema = z.object({
     shippingAddress: z.string().min(10, "Shipping address is required"),
 });
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ user }: { user: User }) {
+	const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const checkout = useSelector((state: RootState) => state.checkout.items);
     const grandTotal = checkout.reduce(
@@ -56,14 +62,23 @@ export default function CheckoutPage() {
                     price: item.medicine.price,
                 }));
                 const serverData = {
-                    totalAmount: grandTotal,
+                    customerId: user.id,
                     shippingAddress: value.shippingAddress,
                     items: orderItems,
                 };
-                console.log(serverData);
-                toast.success("Order placed successfully!", { id: toastId });
-                // router.push("/");
-                // router.refresh();
+                const { data, error } = await createOrder(serverData);
+                if (error) {
+                    toast.error(error.message, { id: toastId });
+                    return;
+                }
+                toast.success(data.message || "Order placed successfully!", {
+                    id: toastId,
+                });
+				form.reset();
+				dispatch(clearCart());
+				dispatch(clearCheckout());
+                router.push("/");
+                router.refresh();
             } catch (error) {
                 console.error(error);
                 toast.error("Failed to place order", {
