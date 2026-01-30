@@ -87,6 +87,22 @@ const Navbar = ({
     },
     className,
 }: Navbar1Props) => {
+    // const menuItems = [...menu];
+    // if (user) {
+    //     let dashboardUrl = "/dashboard/customer-dashboard";
+
+    //     if (user.role === "ADMIN") {
+    //         dashboardUrl = "/dashboard/admin-dashboard";
+    //     } else if (user.role === "SELLER") {
+    //         dashboardUrl = "/dashboard/seller-dashboard";
+    //     }
+
+    //     menuItems.push({
+    //         title: "Dashboard",
+    //         url: dashboardUrl,
+    //     });
+    // }
+
     const cart = useSelector((state: RootState) => state.cart.items);
     const totalCart = cart.reduce((acc, item) => acc + item.quantity, 0);
     const router = useRouter();
@@ -106,10 +122,8 @@ const Navbar = ({
     return (
         <section className={cn("py-4", className)}>
             <div className="container mx-auto px-4">
-                {/* Desktop Menu */}
                 <nav className="hidden items-center justify-between lg:flex">
                     <div className="flex items-center gap-6">
-                        {/* Logo */}
                         <Link
                             href={logo.url}
                             className="flex items-center gap-2 relative w-35 h-10"

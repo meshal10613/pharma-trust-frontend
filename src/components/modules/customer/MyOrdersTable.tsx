@@ -1,7 +1,7 @@
 "use client";
 
 import { SelectValue } from "@radix-ui/react-select";
-import { Order, OrderStatus } from "../../../types";
+import { Order, OrderStatus, Review, User } from "../../../types";
 import {
     Select,
     SelectContent,
@@ -18,10 +18,22 @@ import {
     TableRow,
 } from "../../ui/table";
 import { Button } from "../../ui/button";
-import { Eye, Trash } from "lucide-react";
+import { Eye, MessageSquare, Star, Trash } from "lucide-react";
 import { useState } from "react";
-import { Dialog, DialogContent } from "../../ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "../../ui/dialog";
 import { toast } from "sonner";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../../ui/field";
+import { useForm } from "@tanstack/react-form";
+import { Textarea } from "../../ui/textarea";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { createReview } from "../../../actions/review.action";
 
 const orderStatusStyles: Record<OrderStatus, string> = {
     PLACED: "text-blue-600 border-blue-500",
@@ -31,9 +43,23 @@ const orderStatusStyles: Record<OrderStatus, string> = {
     CANCELLED: "text-red-600 border-red-500",
 };
 
-export default function MyOrdersTable({ orders }: { orders: Order[] }) {
+const reviewSchema = z.object({
+    rating: z.number().min(1, "Rating must be at least 1"),
+    comment: z.string().min(3, "Comment must be at least 3 characters long"),
+});
+
+export default function MyOrdersTable({
+    orders,
+    user,
+}: {
+    orders: Order[];
+    user: User;
+}) {
+    const router = useRouter();
+    const [ids, setIds] = useState("");
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isReviewOpen, setIsReviewOpen] = useState(false);
 
     const handleView = (user: Order) => {
         setSelectedOrder(user);
@@ -44,6 +70,51 @@ export default function MyOrdersTable({ orders }: { orders: Order[] }) {
         console.log(id);
         toast.info("Order delete hasn't implemented yet!");
     };
+
+    const handleAddReview = async (id: string) => {
+        setIsOpen(false);
+        setIsReviewOpen(true);
+        setIds(id);
+    };
+
+    const form = useForm({
+        defaultValues: {
+            rating: 5,
+            comment: "",
+        },
+        validators: {
+            onSubmit: reviewSchema,
+        },
+        onSubmit: async ({ value }) => {
+            const toastId = toast.loading("Review Adding...");
+            const serverData: Partial<Review> = {
+                rating: value.rating,
+                comment: value.comment,
+                userId: user.id,
+                medicineId: ids,
+            };
+
+            try {
+                const { data, error } = await createReview(serverData);
+                if (error) {
+                    toast.error(error.message, { id: toastId });
+                    return;
+                }
+
+                setIsReviewOpen(false);
+                toast.success(data.message || "Review added successfully", {
+                    id: toastId,
+                });
+                router.refresh();
+                router.push("/");
+            } catch (error) {
+                console.error(error);
+                toast.error("Something went wrong, please try again.", {
+                    id: toastId,
+                });
+            }
+        },
+    });
 
     return (
         <>
@@ -156,7 +227,6 @@ export default function MyOrdersTable({ orders }: { orders: Order[] }) {
                 </div>
             )}
 
-            {/* View Dialog */}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogContent className="max-w-md w-full p-0 overflow-hidden rounded-2xl border bg-background shadow-xl outline-none">
                     {selectedOrder && (
@@ -170,7 +240,6 @@ export default function MyOrdersTable({ orders }: { orders: Order[] }) {
                                 </p>
                             </div>
 
-                            {/* Body */}
                             <div className="px-6 py-4 space-y-4">
                                 {/* Status */}
                                 <div className="flex items-center">
@@ -230,28 +299,148 @@ export default function MyOrdersTable({ orders }: { orders: Order[] }) {
                                                     </p>
                                                 </div>
 
-                                                <span className="text-sm font-semibold">
-                                                    ৳{" "}
-                                                    {(
-                                                        item.price *
-                                                        item.quantity
-                                                    ).toFixed(2)}
-                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-semibold">
+                                                        ৳{" "}
+                                                        {(
+                                                            item.price *
+                                                            item.quantity
+                                                        ).toFixed(2)}
+                                                    </span>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="cursor-pointer"
+                                                        onClick={() =>
+                                                            handleAddReview(
+                                                                item.medicineId,
+                                                            )
+                                                        }
+                                                    >
+                                                        <MessageSquare className="mr-2" />{" "}
+                                                    </Button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Footer */}
-                            <div className="px-6 py-3 border-t text-xs text-muted-foreground">
-                                Created:{" "}
-                                {new Date(
-                                    selectedOrder.createdAt,
-                                ).toLocaleString()}
+                            <div className="px-6 py-3 border-t flex flex-row-reverse items-center justify-between gap-2">
+                                <p className="text-xs text-muted-foreground">
+                                    Created:{" "}
+                                    {new Date(
+                                        selectedOrder.createdAt,
+                                    ).toLocaleString()}
+                                </p>
                             </div>
                         </div>
                     )}
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={isReviewOpen} onOpenChange={setIsReviewOpen}>
+                <DialogContent className="max-w-md w-full p-6 rounded-2xl border bg-background shadow-xl">
+                    <DialogHeader>
+                        <DialogTitle>Add Your Review</DialogTitle>
+                    </DialogHeader>
+
+                    <form
+                        id="review-form"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            form.handleSubmit();
+                        }}
+                        className="flex flex-col gap-4"
+                    >
+                        <FieldGroup className="">
+                            <form.Field name="rating">
+                                {(field) => {
+                                    const isInvalid =
+                                        field.state.meta.isTouched &&
+                                        !field.state.meta.isValid;
+                                    const value = field.state.value || 0;
+
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel htmlFor={field.name}>
+                                                Rating
+                                            </FieldLabel>
+
+                                            <div className="flex gap-1">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <Star
+                                                        key={star}
+                                                        className={`h-6 w-6 cursor-pointer transition-colors ${
+                                                            star <= value
+                                                                ? "text-yellow-400 fill-yellow-400"
+                                                                : "text-gray-300"
+                                                        } hover:text-yellow-400 hover:fill-yellow-400`}
+                                                        onClick={() =>
+                                                            field.handleChange(
+                                                                star,
+                                                            )
+                                                        }
+                                                    />
+                                                ))}
+                                            </div>
+
+                                            {isInvalid && (
+                                                <FieldError
+                                                    errors={
+                                                        field.state.meta.errors
+                                                    }
+                                                />
+                                            )}
+                                        </Field>
+                                    );
+                                }}
+                            </form.Field>
+                            <form.Field name="comment">
+                                {(field) => {
+                                    const isInvalid =
+                                        field.state.meta.isTouched &&
+                                        !field.state.meta.isValid;
+
+                                    return (
+                                        <Field data-invalid={isInvalid}>
+                                            <FieldLabel htmlFor={field.name}>
+                                                Comment
+                                            </FieldLabel>
+                                            <Textarea
+                                                id={field.name}
+                                                name={field.name}
+                                                value={field.state.value}
+                                                onChange={(e) =>
+                                                    field.handleChange(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="Write your review..."
+                                                className="border rounded-md p-2 resize-none h-24"
+                                            />
+                                            {isInvalid && (
+                                                <FieldError
+                                                    errors={
+                                                        field.state.meta.errors
+                                                    }
+                                                />
+                                            )}
+                                        </Field>
+                                    );
+                                }}
+                            </form.Field>
+                        </FieldGroup>
+
+                        <DialogFooter className="pt-2">
+                            <Button
+                                type="submit"
+                                className="w-full cursor-pointer bg-primary text-white"
+                            >
+                                Submit Review
+                            </Button>
+                        </DialogFooter>
+                    </form>
                 </DialogContent>
             </Dialog>
         </>

@@ -7,6 +7,9 @@ const API_URL = env.API_URL;
 interface GetMedicineParams {
     search?: string;
     page?: string;
+    limit?: string;
+    sortOrder?: string;
+    sortBy?: string;
 }
 
 export const medicineService = {

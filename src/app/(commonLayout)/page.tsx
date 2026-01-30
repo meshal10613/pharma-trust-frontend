@@ -6,9 +6,9 @@ import { Category, Medicine } from "../../types";
 import { medicineService } from "../../services/medicine.service";
 
 export default async function Home() {
-    const [ c, m ] = await Promise.all([
+    const [c, m] = await Promise.all([
         categoryService.getAllCategorys(),
-        medicineService.getAllMedicines(),
+        medicineService.getAllMedicines({ limit: "12" }),
     ]);
 
     const categories: Category[] = c.data?.data;

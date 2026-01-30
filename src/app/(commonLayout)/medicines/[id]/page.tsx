@@ -1,4 +1,5 @@
 import MedicinesDetails from "../../../../components/modules/medicines/MedicineDetails";
+import MedicinesReview from "../../../../components/modules/medicines/MedicineReview";
 import { medicineService } from "../../../../services/medicine.service";
 import { Medicine } from "../../../../types";
 
@@ -14,6 +15,7 @@ export default async function MedicineDetailsPage({
     return (
         <div className="container mx-auto">
             <MedicinesDetails medicine={medicine} />
+            <MedicinesReview reviews={medicine.reviews || []} />
         </div>
     );
 }

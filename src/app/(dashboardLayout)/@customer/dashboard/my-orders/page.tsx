@@ -9,6 +9,8 @@ export default async function MyOrdersPage() {
     if (!u) return <h1>Loading...</h1>;
     const user: User = u?.data;
 
+    if(!user) return null;
+
     const { data, error } = await orderService.getMyOrders(user.id);
     if (error) return <h1>{error.message}</h1>;
     if (!data) return <h1>Loading...</h1>;
@@ -17,7 +19,7 @@ export default async function MyOrdersPage() {
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-5">My Orders</h2>
-            <MyOrdersTable orders={orders} />
+            <MyOrdersTable orders={orders} user={user} />
         </div>
     );
 }
