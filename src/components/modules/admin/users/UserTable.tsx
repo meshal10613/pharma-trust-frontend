@@ -99,7 +99,6 @@ export default function UserTable({ users }: { users: User[] }) {
                     <Table>
                         <TableHeader>
                             <TableRow className="">
-                                <TableHead>Image</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Role</TableHead>
@@ -107,21 +106,9 @@ export default function UserTable({ users }: { users: User[] }) {
                                 <TableHead>Extras</TableHead>
                             </TableRow>
                         </TableHeader>
-                        <TableBody>
+                        <TableBody className="">
                             {users.map((user) => (
                                 <TableRow key={user.id}>
-                                    <TableCell>
-                                        <Image
-                                            src={
-                                                user.image ||
-                                                "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"
-                                            }
-                                            alt={user.name}
-                                            width={40}
-                                            height={40}
-                                            className="rounded-full"
-                                        />
-                                    </TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>

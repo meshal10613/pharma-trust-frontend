@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
     let isSeller = false;
 
     const { data } = await userService.getSession();
-
+    console.log(data)
     if (data) {
         isAuthenticated = true;
         isAdmin = data.user.role === "ADMIN";

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import ReduxProviderWrapper from "../components/layout/ReduxProviderWrapper";
+import AuthLoader from "../components/layout/AuthLoader";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
+                        <AuthLoader />
                         {children}
                     </ThemeProvider>
                     <Toaster richColors />

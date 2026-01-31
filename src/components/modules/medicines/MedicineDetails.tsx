@@ -8,15 +8,20 @@ import { Badge } from "../../ui/badge";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { Minus, Plus, ShoppingCart, Zap } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../store/slice/cartSlice";
 import { addToCheckout } from "../../../store/slice/checkoutSlice";
 import { useRouter } from "next/navigation";
+import { RootState } from "../../../store";
+import { toast } from "sonner";
 
 export default function MedicinesDetails({ medicine }: { medicine: Medicine }) {
     const router = useRouter();
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
+
+    const user = useSelector((state: RootState) => state.user.user);
+    const loading = useSelector((state: RootState) => state.user.loading);
 
     const increase = () => {
         if (quantity < medicine.stock) setQuantity(quantity + 1);
@@ -27,20 +32,31 @@ export default function MedicinesDetails({ medicine }: { medicine: Medicine }) {
     };
 
     const handleAddToCart = (medicine: Medicine) => {
-        const data = {
-            medicine,
-            quantity,
-        };
-        dispatch(addToCart(data));
+        if (!loading && user) {
+            const data = {
+                medicine,
+                quantity: 1,
+            };
+            dispatch(addToCart(data));
+            toast.success(`${medicine.name} added to cart`);
+        } else {
+            toast.error("Please login to add to cart");
+            router.push("/login");
+        }
     };
 
     const handleBuyNow = (medicine: Medicine) => {
-        const data = {
-            medicine,
-            quantity,
-        };
-        dispatch(addToCheckout(data));
-        router.push("/checkout");
+        if (!loading && user) {
+            const data = {
+                medicine,
+                quantity,
+            };
+            dispatch(addToCheckout(data));
+            router.push("/checkout");
+        } else {
+            toast.error("Please login to buy now");
+            router.push("/login");
+        }
     };
 
     return (

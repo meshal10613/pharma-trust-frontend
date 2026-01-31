@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import CheckoutPage from "../../../components/modules/checkout/CheckoutPage";
 import { userService } from "../../../services/user.service";
 import { User } from "../../../types";
@@ -5,6 +6,8 @@ import { User } from "../../../types";
 export default async function Checkout() {
     const { data: u } = await userService.getSession();
     const user: User = u.user;
+
+    if(!user) return redirect("/login");
 
     return (
         <div className="container mx-auto my-10">

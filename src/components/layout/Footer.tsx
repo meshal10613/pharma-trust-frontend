@@ -171,7 +171,7 @@ function SocialLink({ href, icon }: { href: string; icon: React.ReactNode }) {
     return (
         <Link
             href={href}
-            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all duration-300"
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white hover:bg-primary hover:text-white transition-all duration-300"
         >
             {icon}
         </Link>

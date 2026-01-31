@@ -13,21 +13,34 @@ import { Badge } from "../../ui/badge";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "../../ui/button";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../store/slice/cartSlice";
+import { RootState } from "../../../store";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function MedicineCards({
     medicines,
 }: {
     medicines: Medicine[];
 }) {
+    const router = useRouter();
     const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.user.user);
+    const loading = useSelector((state: RootState) => state.user.loading);
+
     const handleAddToCart = (medicine: Medicine) => {
-        const data = {
-            medicine,
-            quantity: 1,
-        };
-        dispatch(addToCart(data));
+        if (!loading && user) {
+            const data = {
+                medicine,
+                quantity: 1,
+            };
+            dispatch(addToCart(data));
+            toast.success(`${medicine.name} added to cart`);
+        } else {
+            toast.error("Please login to add to cart");
+            router.push("/login");
+        }
     };
 
     return (

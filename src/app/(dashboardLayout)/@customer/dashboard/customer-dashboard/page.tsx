@@ -25,7 +25,6 @@ export default async function CustomerDashboard() {
     if (error) return <h1>{error.message}</h1>;
     if (!data) return <h1>Loading...</h1>;
     const stats = data.data;
-    console.log(stats);
 
     const totalsData = [
         { name: "Order", value: stats.ordersCount },
