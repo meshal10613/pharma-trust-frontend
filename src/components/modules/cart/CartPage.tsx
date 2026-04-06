@@ -14,7 +14,10 @@ import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import Link from "next/link";
 import { Badge } from "../../ui/badge";
-import { addToCheckout, clearCheckout } from "../../../store/slice/checkoutSlice";
+import {
+    addToCheckout,
+    clearCheckout,
+} from "../../../store/slice/checkoutSlice";
 
 export default function CartPage() {
     const router = useRouter();
@@ -209,6 +212,7 @@ export default function CartPage() {
                     <p className="text-xl font-semibold">৳ {grandTotal}</p>
                 </div>
                 <Button
+                    disabled={cart.length === 0}
                     onClick={handleAddToCheckout}
                     size="lg"
                     className="cursor-pointer bg-[#2B93C4] hover:bg-[#2B93C4] dark:text-white"

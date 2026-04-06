@@ -13,6 +13,10 @@ export const sellerRoutes: Routes[] = [
                 url: "/seller-dashboard/my-profile",
             },
             {
+                title: "My Orders",
+                url: "/seller-dashboard/my-orders",
+            },
+            {
                 title: "Medicines",
                 url: "/seller-dashboard/medicines",
             },

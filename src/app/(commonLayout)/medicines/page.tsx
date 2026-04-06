@@ -4,6 +4,8 @@ import MedicinesQuery from "../../../components/modules/medicines/MedicineQuery"
 import { medicineService } from "../../../services/medicine.service";
 import { Medicine } from "../../../types";
 
+export const dynamic = 'force-dynamic';
+
 export default async function MedicinesPage({
     searchParams,
 }: {

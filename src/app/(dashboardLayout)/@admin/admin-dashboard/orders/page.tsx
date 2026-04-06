@@ -2,6 +2,8 @@ import OrderTable from "../../../../../components/modules/admin/orders/OrderTabl
 import { orderService } from "../../../../../services/order.service";
 import { Order } from "../../../../../types";
 
+export const dynamic = "force-dynamic";
+
 export default async function OrdersPage() {
     const { data: o, error } = await orderService.getAllOrders();
     if (error) return <h1>{error.message}</h1>;

@@ -28,8 +28,9 @@ import { useRouter } from "next/navigation";
 import Logout from "../modules/authentication/logout";
 import l from "../../../public/logo.png";
 import mlogo from "../../../public/l.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { logout } from "../../store/slice/userSlice";
 
 interface MenuItem {
     title: string;
@@ -78,7 +79,7 @@ const Navbar = ({
         },
         {
             title: "Dashboard",
-            url: user ? `/dashboard/customer-dashboard` : "/login",
+            url: `/dashboard/customer-dashboard`,
         },
     ],
     auth = {
@@ -87,22 +88,7 @@ const Navbar = ({
     },
     className,
 }: Navbar1Props) => {
-    // const menuItems = [...menu];
-    // if (user) {
-    //     let dashboardUrl = "/dashboard/customer-dashboard";
-
-    //     if (user.role === "ADMIN") {
-    //         dashboardUrl = "/dashboard/admin-dashboard";
-    //     } else if (user.role === "SELLER") {
-    //         dashboardUrl = "/dashboard/seller-dashboard";
-    //     }
-
-    //     menuItems.push({
-    //         title: "Dashboard",
-    //         url: dashboardUrl,
-    //     });
-    // }
-
+    const dispatch = useDispatch();
     const cart = useSelector((state: RootState) => state.cart.items);
     const totalCart = cart.reduce((acc, item) => acc + item.quantity, 0);
     const router = useRouter();
@@ -110,6 +96,7 @@ const Navbar = ({
         const toastId = toast.loading("Logging out...");
         try {
             await authClient.signOut();
+            dispatch(logout());
             toast.success("Logged out successfully", { id: toastId });
 
             router.refresh();

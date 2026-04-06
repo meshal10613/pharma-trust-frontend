@@ -4,6 +4,8 @@ import TotalsPie from "../../../../../components/modules/seller/dashboard/Totals
 import UsersPie from "../../../../../components/modules/admin/dashboard/UsersPie";
 import OrderAmountStatus from "../../../../../components/modules/admin/dashboard/OrderAmountStatusPie";
 
+export const dynamic = "force-dynamic";
+
 const COLOR_MAP: Record<string, string> = {
     Admin: "#2563eb",
     Seller: "#16a34a",

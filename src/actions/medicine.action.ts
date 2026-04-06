@@ -5,12 +5,12 @@ import { medicineService } from "../services/medicine.service";
 import {  CreateMedicine, UpdateMedicine } from "../types";
 
 export const updateMedicine = async(id: string, data: UpdateMedicine) => {
-	updateTag("medicines");
+	updateTag("medicinesServer");
 	return await medicineService.updateMedicine(id, data);
 }
 
 export const deleteMedicine = async(id: string) => {
-	updateTag("medicines");
+	updateTag("medicinesServer");
 	return await medicineService.deleteMedicine(id);
 }
 

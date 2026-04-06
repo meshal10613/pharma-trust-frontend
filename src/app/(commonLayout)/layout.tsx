@@ -1,6 +1,7 @@
 import { getUser } from "../../actions/user.action";
 import Footer from "../../components/layout/Footer";
 import { Navbar } from "../../components/layout/navbar";
+import { User } from "../../types";
 
 export default async function CommonLayout({
     children,
@@ -8,8 +9,8 @@ export default async function CommonLayout({
     children: React.ReactNode;
 }>) {
     const { data } = await getUser();
+    const user: User = data?.user;
 
-    const user = data?.user;
     return (
         <div>
             <Navbar user={user} />

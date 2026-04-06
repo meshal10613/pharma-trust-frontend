@@ -41,7 +41,7 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <AuthLoader />
+                        <AuthLoader/>
                         {children}
                     </ThemeProvider>
                     <Toaster richColors />

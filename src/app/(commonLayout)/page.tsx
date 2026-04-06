@@ -6,14 +6,16 @@ import { Category, Medicine } from "../../types";
 import { medicineService } from "../../services/medicine.service";
 import WhyChooseUs from "../../components/modules/home/WhyChooseUs";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
     const [c, m] = await Promise.all([
         categoryService.getAllCategorys(),
-        medicineService.getAllMedicines({ limit: "12" }),
+        medicineService.getAllMedicinesServer(),
     ]);
 
-    const categories: Category[] = c.data?.data;
-    const medicines: Medicine[] = m.data?.data?.data;
+    const categories: Category[] = c.data?.data || [];
+    const medicines: Medicine[] = m.data?.data?.data || [];
 
     return (
         <div className="container mx-auto">

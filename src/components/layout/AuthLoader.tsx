@@ -1,7 +1,6 @@
 "use client";
 
-import useLoadUser from "../../hooks/useLoadUser";
-
+import useLoadUser from "../../hooks/userLoadUser";
 
 export default function AuthLoader() {
     useLoadUser();

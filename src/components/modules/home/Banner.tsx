@@ -1,5 +1,5 @@
 import Image from "next/image";
-import banner from "../../../../public/banner.avif";
+import banner from "../../../../public/banner.webp";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Pill } from "lucide-react";
 import Link from "next/link";

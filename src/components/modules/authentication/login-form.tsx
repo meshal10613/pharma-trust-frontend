@@ -26,6 +26,9 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { env } from "../../../env";
+
+const NEXT_PUBLIC_FRONTEND_URL = env.NEXT_PUBLIC_FRONTEND_URL;
 
 const formSchema = z.object({
     email: z.email("Invalid email"),
@@ -48,15 +51,14 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
             const toastId = toast.loading("Logging in...");
 
             try {
-                const { data, error } = await authClient.signIn.email(value);
+                const { error } = await authClient.signIn.email(value);
                 if (error) {
                     toast.error(error.message, { id: toastId });
                     return;
                 }
-                console.log(data);
                 toast.success("Login successful", { id: toastId });
-                router.refresh();
                 router.push("/");
+                router.refresh();
             } catch (error) {
                 console.error(error);
                 toast.error("Something went wrong, please try again.", {
@@ -69,7 +71,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
     const handleGoogleLogin = async () => {
         await authClient.signIn.social({
             provider: "google",
-            callbackURL: "http://localhost:3000",
+            callbackURL: NEXT_PUBLIC_FRONTEND_URL,
         });
     };
 

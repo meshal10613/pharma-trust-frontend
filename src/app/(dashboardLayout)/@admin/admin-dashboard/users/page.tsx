@@ -2,6 +2,8 @@ import UserTable from "../../../../../components/modules/admin/users/UserTable";
 import { userService } from "../../../../../services/user.service";
 import { User } from "../../../../../types";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
     title: "User Management | Admin Dashboard",
 };

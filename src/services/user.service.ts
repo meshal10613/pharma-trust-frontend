@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { env } from "../env";
-import { UpdateUser } from "../types";
+import { User } from "../types";
 
 const AUTH_URL = env.AUTH_URL;
 const API_URL = env.API_URL;
@@ -175,7 +175,7 @@ export const userService = {
         }
     },
 
-    updateUser: async (id: string, data: UpdateUser) => {
+    updateUser: async (id: string, data: Partial<User>) => {
         try {
             const cookieStore = await cookies();
             const res = await fetch(`${API_URL}/user/${id}`, {

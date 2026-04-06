@@ -33,6 +33,7 @@ export default async function DashboardLayout({
     customer: React.ReactNode;
 }>) {
     const { data } = await userService.getSession();
+    if (!data) return;
     const user = data.user;
     const role = data?.user?.role as Role | undefined;
 
@@ -60,7 +61,6 @@ export default async function DashboardLayout({
             routes = [];
             break;
     }
-
     return (
         <SidebarProvider>
             <AppSidebar user={user} />

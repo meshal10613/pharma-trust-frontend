@@ -27,6 +27,9 @@ import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { authClient } from "../../../lib/auth-client";
 import { useRouter } from "next/navigation";
+import { env } from "../../../env";
+
+const NEXT_PUBLIC_FRONTEND_URL = env.NEXT_PUBLIC_FRONTEND_URL;
 
 const formSchema = z.object({
     name: z.string().min(1, "This field is required"),
@@ -64,8 +67,8 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                 }
                 console.log(data);
 
-                toast.success("Registration successful", { id: toastId });
-                router.push("/");
+                toast.success("Registration successful. Please login to continue.", { id: toastId });
+                router.push("/login");
                 router.refresh();
             } catch (error) {
                 console.log(error);
@@ -79,7 +82,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
     const handleGoogleLogin = async () => {
         await authClient.signIn.social({
             provider: "google",
-            callbackURL: "http://localhost:3000",
+            callbackURL: NEXT_PUBLIC_FRONTEND_URL,
         });
     };
 

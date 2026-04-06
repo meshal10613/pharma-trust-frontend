@@ -3,6 +3,8 @@ import TotalsPie from "../../../../../components/modules/seller/dashboard/Totals
 import { userService } from "../../../../../services/user.service";
 import OrderAmountStatus from "../../../../../components/modules/admin/dashboard/OrderAmountStatusPie";
 
+export const dynamic = "force-dynamic";
+
 const COLOR_MAP: Record<string, string> = {
     Category: "#2563eb",
     Order: "#16a34a",

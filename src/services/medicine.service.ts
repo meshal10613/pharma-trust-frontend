@@ -3,6 +3,7 @@ import { env } from "../env";
 import { CreateMedicine, UpdateMedicine } from "../types";
 
 const API_URL = env.API_URL;
+const NEXT_PUBLIC_BACKEND_API_URL = env.NEXT_PUBLIC_BACKEND_API_URL;
 
 interface GetMedicineParams {
     search?: string;
@@ -15,7 +16,47 @@ interface GetMedicineParams {
 export const medicineService = {
     getAllMedicines: async (params?: GetMedicineParams) => {
         try {
-            const cookieStore = await cookies();
+            const url = new URL(`${NEXT_PUBLIC_BACKEND_API_URL}/medicine`);
+
+            if (params) {
+                Object.entries(params).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null && value !== "") {
+                        url.searchParams.set(key, value);
+                    }
+                });
+            }
+
+            const config: RequestInit = {
+                // cache: "no-store",
+            };
+
+            config.next = {
+                ...config.next,
+                revalidate: 60,
+                tags: ["medicines"],
+            };
+
+            const res = await fetch(url.toString(), config);
+            const session = await res.json();
+            if (session === null) {
+                return {
+                    data: null,
+                    error: { message: "No medicine found", error: null },
+                };
+            }
+
+            return { data: session, error: null };
+        } catch (error) {
+            console.log(error);
+            return {
+                data: null,
+                error: { message: "Something went wrong", error },
+            };
+        }
+    },
+
+    getAllMedicinesServer: async (params?: GetMedicineParams) => {
+        try {
             const url = new URL(`${API_URL}/medicine`);
 
             if (params) {
@@ -27,16 +68,15 @@ export const medicineService = {
             }
 
             const config: RequestInit = {
-                headers: {
-                    Cookie: cookieStore.toString(),
-                },
+                // cache: "no-store",
             };
 
             config.next = {
                 ...config.next,
-                tags: ["medicines"],
+                revalidate: 60,
+                tags: ["medicinesServer"],
             };
-            
+
             const res = await fetch(url.toString(), config);
             const session = await res.json();
             if (session === null) {
@@ -58,13 +98,10 @@ export const medicineService = {
 
     getMedicineById: async (id: string) => {
         try {
-            const cookieStore = await cookies();
-
             const res = await fetch(`${API_URL}/medicine/${id}`, {
-                headers: {
-                    Cookie: cookieStore.toString(),
+                next: {
+                    revalidate: 60,
                 },
-                cache: "no-store",
             });
             const session = await res.json();
             if (session === null) {

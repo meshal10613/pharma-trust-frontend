@@ -11,25 +11,25 @@ const useLoadUser = () => {
     const user = useSelector((state: RootState) => state.user.user);
 
     useEffect(() => {
-        if (user) {
-            dispatch(stopLoading());
-            return;
-        }
+        if (user) return;
 
         const fetchUser = async () => {
             dispatch(startLoading());
 
             try {
                 const { data } = await getUser();
-                dispatch(setUser(data.user));
+                if (data) {
+                    dispatch(setUser(data.user));
+                }
             } catch (error) {
                 console.error("Profile fetch failed", error);
+            } finally {
                 dispatch(stopLoading());
             }
         };
 
         fetchUser();
-    }, [dispatch, user]);
+    }, [user, dispatch]);
 };
 
 export default useLoadUser;

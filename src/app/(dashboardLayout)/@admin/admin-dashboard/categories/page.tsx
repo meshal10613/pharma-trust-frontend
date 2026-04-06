@@ -3,6 +3,8 @@ import CategoryTable from "../../../../../components/modules/admin/category/Cate
 import { categoryService } from "../../../../../services/category.service";
 import { Category } from "../../../../../types";
 
+export const dynamic = "force-dynamic";
+
 export default async function CategoriesPage() {
     const { data } = await categoryService.getAllCategorys();
     const categories: Category[] = data.data;

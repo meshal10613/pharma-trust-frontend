@@ -6,6 +6,8 @@ import { medicineService } from "../../../../../services/medicine.service";
 import { userService } from "../../../../../services/user.service";
 import { Category, Medicine, User } from "../../../../../types";
 
+export const dynamic = "force-dynamic";
+
 export default async function MedicinesPage({
     searchParams,
 }: {

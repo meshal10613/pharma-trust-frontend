@@ -8,30 +8,28 @@ import { Button } from "../ui/button";
 import { User, UserStatus } from "../../types";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
-import { z } from "zod";
+// import { z } from "zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { updateUser } from "../../actions/user.action";
 
-const emptyToUndefined = (v: unknown) => (v === "" ? undefined : v);
-
-const formSchema = z.object({
-    name: z.preprocess(emptyToUndefined, z.string().optional()),
-    email: z.preprocess(emptyToUndefined, z.string().email().optional()),
-    image: z.preprocess(emptyToUndefined, z.string().url().optional()),
-    status: z.preprocess(emptyToUndefined, z.string().optional()),
-});
+// const formSchema = z.object({
+//     name: z.string().optional(),
+//     email: z.string().email().optional(),
+//     image: z.string().url().optional(),
+//     status: z.nativeEnum(UserStatus).optional(),
+// });
 
 export default function MyProfile({ user }: { user: User }) {
     const form = useForm({
         defaultValues: {
             name: user.name,
             email: user.email,
-            image: user.image ?? "",
-            status: user.status,
+            image: user.image ?? undefined,
+            status: user.status as UserStatus,
         },
-        validators: {
-            onSubmit: formSchema,
-        },
+        // validators: {
+        //     onSubmit: formSchema,
+        // },
         onSubmit: async ({ value }) => {
             const toastId = toast.loading("Updating Profile...");
             const serverData: Partial<{ name: string; image: string }> = {};
@@ -235,7 +233,8 @@ export default function MyProfile({ user }: { user: User }) {
                                                 value={field.state.value}
                                                 onChange={(e) =>
                                                     field.handleChange(
-                                                        e.target.value as UserStatus,
+                                                        e.target
+                                                            .value as UserStatus,
                                                     )
                                                 }
                                                 readOnly
