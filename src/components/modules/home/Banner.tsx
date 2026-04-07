@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Banner() {
     return (
-        <div className="relative w-full h-125 md:h-150 overflow-hidden">
+        <div className="relative w-full h-125 md:h-150 overflow-hidden mt-5">
             <Image
                 src={banner}
                 alt="PharmaTrust Healthcare Banner"

@@ -1,30 +1,142 @@
 "use client";
 
-import { CheckCircle, Truck, Shield, Headset } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
+import { CheckCircle, Shield, Truck, Headset } from "lucide-react";
 
 const features = [
     {
-        title: "Genuine Medicines",
-        icon: <CheckCircle className="w-6 h-6 text-primary" />,
-        description: "All medicines are 100% authentic and verified.",
+        title: "Genuine medicines",
+        description:
+            "Every product is 100% authentic, sourced from verified manufacturers and quality-checked before dispatch.",
+        tag: "100% verified",
+        icon: CheckCircle,
+        iconColor: "text-teal-700 dark:text-teal-300",
+        iconBg: "bg-teal-50 dark:bg-teal-950",
+        dotColor: "bg-teal-500",
+        tagColor: "text-teal-700 dark:text-teal-300",
+        borderAccent: "hover:border-teal-200 dark:hover:border-teal-800",
     },
     {
-        title: "Licensed Sellers",
-        icon: <Shield className="w-6 h-6 text-primary" />,
-        description: "Our sellers are verified and licensed for safe products.",
+        title: "Licensed sellers",
+        description:
+            "All our sellers hold valid licenses and pass strict compliance checks so you always get safe, regulated products.",
+        tag: "Fully licensed",
+        icon: Shield,
+        iconColor: "text-blue-700 dark:text-blue-300",
+        iconBg: "bg-blue-50 dark:bg-blue-950",
+        dotColor: "bg-blue-500",
+        tagColor: "text-blue-700 dark:text-blue-300",
+        borderAccent: "hover:border-blue-200 dark:hover:border-blue-800",
     },
     {
-        title: "Fast Delivery",
-        icon: <Truck className="w-6 h-6 text-primary" />,
-        description: "Get your order delivered quickly to your doorstep.",
+        title: "Fast delivery",
+        description:
+            "Orders reach your doorstep quickly with real-time tracking and guaranteed timeslots in most areas.",
+        tag: "Express shipping",
+        icon: Truck,
+        iconColor: "text-amber-700 dark:text-amber-300",
+        iconBg: "bg-amber-50 dark:bg-amber-950",
+        dotColor: "bg-amber-500",
+        tagColor: "text-amber-700 dark:text-amber-300",
+        borderAccent: "hover:border-amber-200 dark:hover:border-amber-800",
     },
     {
-        title: "Easy Returns & Support",
-        icon: <Headset className="w-6 h-6 text-primary" />,
-        description: "Hassle-free returns and 24/7 customer support.",
+        title: "Easy returns & support",
+        description:
+            "No-hassle returns policy and a 24/7 support team ready to resolve any issue, any time.",
+        tag: "24/7 available",
+        icon: Headset,
+        iconColor: "text-violet-700 dark:text-violet-300",
+        iconBg: "bg-violet-50 dark:bg-violet-950",
+        dotColor: "bg-violet-500",
+        tagColor: "text-violet-700 dark:text-violet-300",
+        borderAccent: "hover:border-violet-200 dark:hover:border-violet-800",
     },
 ];
+
+function FeatureCard({
+    feature,
+    index,
+}: {
+    feature: (typeof features)[0];
+    index: number;
+}) {
+    const [visible, setVisible] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+    const Icon = feature.icon;
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => setVisible(true), index * 80);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 },
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, [index]);
+
+    return (
+        <div
+            ref={ref}
+            className={[
+                "group flex flex-col gap-4 rounded-xl border border-border bg-background p-6",
+                "transition-all duration-300",
+                feature.borderAccent,
+                visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4",
+            ].join(" ")}
+            style={{ transitionDelay: visible ? "0ms" : `${index * 80}ms` }}
+        >
+            {/* Icon */}
+            <div
+                className={[
+                    "w-10 h-10 mx-auto rounded-lg flex items-center justify-center shrink-0",
+                    feature.iconBg,
+                ].join(" ")}
+            >
+                <Icon
+                    className={["w-4.5 4.5", feature.iconColor].join(
+                        " ",
+                    )}
+                    strokeWidth={2}
+                />
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-col gap-1">
+                <p className="text-[15px] font-medium text-foreground leading-snug">
+                    {feature.title}
+                </p>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                    {feature.description}
+                </p>
+            </div>
+
+            {/* Footer tag */}
+            <div className="mt-auto pt-3 border-t border-border flex items-center justify-center gap-2">
+                <span
+                    className={[
+                        "w-1.5 h-1.5 rounded-full shrink-0",
+                        feature.dotColor,
+                    ].join(" ")}
+                />
+                <span
+                    className={[
+                        "text-[12px] font-medium",
+                        feature.tagColor,
+                    ].join(" ")}
+                >
+                    {feature.tag}
+                </span>
+            </div>
+        </div>
+    );
+}
 
 export default function WhyChooseUs() {
     return (
@@ -38,24 +150,13 @@ export default function WhyChooseUs() {
                     safety.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {features.map((feature, index) => (
-                        <Card
-                            key={index}
-                            className="p-6 hover:shadow-lg transition-shadow"
-                        >
-                            <CardHeader className="flex flex-col items-center gap-4">
-                                {feature.icon}
-                                <CardTitle className="text-lg font-semibold text-center">
-                                    {feature.title}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-sm text-center text-muted-foreground">
-                                    {feature.description}
-                                </p>
-                            </CardContent>
-                        </Card>
+                        <FeatureCard
+                            key={feature.title}
+                            feature={feature}
+                            index={index}
+                        />
                     ))}
                 </div>
             </div>

@@ -41,7 +41,7 @@ export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
             >
                 Medicines
             </h2>
-            <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10">
+            <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10 flex-wrap">
                 Browse our wide range of high-quality medicines, carefully
                 sourced from trusted sellers to ensure your health and safety.
             </p>
