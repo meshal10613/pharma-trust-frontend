@@ -39,4 +39,36 @@ export const reviewService = {
             };
         }
     },
+
+    getAllReviews: async() => {
+        try {
+            const res = await fetch(`${API_URL}/review`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store",
+            });
+
+            if (!res.ok) {
+                const errBody = await res.json().catch(() => null);
+                return {
+                    data: null,
+                    error: {
+                        message: errBody?.message ?? "Failed to get review",
+                        error: errBody ?? null,
+                    },
+                };
+            }
+
+            const updated = await res.json();
+            return { data: updated, error: null };
+        } catch (error) {
+            console.log(error);
+            return {
+                data: null,
+                error: { message: "Something went wrong", error },
+            };
+        }
+    }
 };

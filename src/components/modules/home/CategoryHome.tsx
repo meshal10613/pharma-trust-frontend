@@ -103,7 +103,7 @@ function CategoryCard({ category, index, onClick }: CategoryCardProps) {
             />
 
             {/* Header: icon + name */}
-            <div className="flex items-start gap-3 mt-1">
+            <div className="flex items-center gap-3 mt-1">
                 <div
                     className="w-10 h-10 rounded-lg flex items-center justify-center text-base shrink-0"
                     style={{
@@ -117,9 +117,9 @@ function CategoryCard({ category, index, onClick }: CategoryCardProps) {
                     <p className="text-sm font-medium text-gray-900 leading-snug">
                         {category.name}
                     </p>
-                    <p className="text-[11px] text-gray-400 mt-0.5 truncate">
+                    {/* <p className="text-[11px] text-gray-400 mt-0.5 truncate">
                         {category.id}
-                    </p>
+                    </p> */}
                 </div>
             </div>
 

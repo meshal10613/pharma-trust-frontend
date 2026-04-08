@@ -18,6 +18,7 @@ import {
     addToCheckout,
     clearCheckout,
 } from "../../../store/slice/checkoutSlice";
+import { useEffect } from "react";
 
 export default function CartPage() {
     const router = useRouter();
@@ -28,6 +29,12 @@ export default function CartPage() {
         (acc, item) => acc + item.quantity * item.medicine.price,
         0,
     );
+
+    useEffect(() => {
+        if (cart.length === 0) {
+            router.push("/");
+        }
+    }, [cart, router]);
 
     const handleAddToCheckout = () => {
         dispatch(clearCheckout());

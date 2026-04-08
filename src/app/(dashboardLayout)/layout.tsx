@@ -1,25 +1,17 @@
 import React from "react";
-import { Separator } from "@radix-ui/react-separator";
 import { AppSidebar } from "../../components/layout/app-sidebar";
 import {
     SidebarInset,
     SidebarProvider,
     SidebarTrigger,
 } from "../../components/ui/sidebar";
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { userService } from "../../services/user.service";
 import { Routes } from "../../types";
 import { Roles } from "../../constants/role";
 import { adminRoutes } from "../../routes/adminRoutes";
 import { sellerRoutes } from "../../routes/sellerRoutes";
 import { userRoutes } from "../../routes/userRoutes";
+import UserDropDown from "../../components/modules/myprofile/UserDropDown";
 
 type Role = "ADMIN" | "SELLER" | "CUSTOMER";
 
@@ -65,29 +57,11 @@ export default async function DashboardLayout({
         <SidebarProvider>
             <AppSidebar user={user} />
             <SidebarInset>
-                <header className="flex w-full h-16 shrink-0 items-center gap-2 border-b px-4">
+                <header className="flex justify-between w-full h-16 shrink-0 items-center gap-2 border-b px-4">
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1" />
-                        <Separator
-                            orientation="vertical"
-                            className="mr-2 data-[orientation=vertical]:h-4"
-                        />
-                        <Breadcrumb>
-                            <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">
-                                        {routes[0].title}
-                                    </BreadcrumbLink>
-                                </BreadcrumbItem>
-                                <BreadcrumbSeparator className="hidden md:block" />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>
-                                        Data Fetching
-                                    </BreadcrumbPage>
-                                </BreadcrumbItem>
-                            </BreadcrumbList>
-                        </Breadcrumb>
                     </div>
+                    <UserDropDown/>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4">
                     {roleView[role]}
