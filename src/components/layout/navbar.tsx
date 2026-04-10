@@ -81,7 +81,7 @@ const Navbar = ({
     menu = [
         { title: "Home", url: "/" },
         { title: "Medicines", url: "/medicines" },
-        // { title: "Dashboard", url: `/dashboard/customer-dashboard` },
+        { title: "About", url: "/about" },
     ],
     auth = {
         login: { title: "Login", url: "/login" },
