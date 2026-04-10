@@ -19,7 +19,7 @@ export default async function Home() {
 
     const categories: Category[] = c.data?.data || [];
     const medicines: Medicine[] = m.data?.data?.data || [];
-    const reviews: Review[] = r.data.data || [];
+    const reviews: Review[] = r.data?.data || [];
 
     return (
         <div className="container mx-auto">

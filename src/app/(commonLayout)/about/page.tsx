@@ -7,6 +7,8 @@ import {
     CardTitle,
 } from "../../../components/ui/card";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AboutPage() {
     return (
         <div className="container mx-auto px-4 sm:px-6 py-8 space-y-10">

@@ -133,3 +133,11 @@
 body{
     scroll-behavior: smooth;
 }
+
+.tg-toast {
+    background: #fbfbfb !important;
+}
+
+.tg-msg {
+    color: #1e1e2e !important;
+}

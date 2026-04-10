@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../store/slice/cartSlice";
 import Link from "next/link";
 import { RootState } from "../../../store";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { toast } from "toasty-elegant";
 import { useRouter } from "next/navigation";
 
 export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
@@ -26,9 +27,13 @@ export default function MedicineHome({ medicines }: { medicines: Medicine[] }) {
                 quantity: 1,
             };
             dispatch(addToCart(data));
-            toast.success(`${medicine.name} added to cart`);
-        }else{
-            toast.error("Please login to add to cart");
+            toast.success(`${medicine.name} added to cart`, {
+                position: "bottom-right",
+            });
+        } else {
+            toast.error("Please login to add to cart", {
+                position: "bottom-right",
+            });
             router.push("/login");
         }
     };
